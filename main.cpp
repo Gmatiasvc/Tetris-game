@@ -1,12 +1,24 @@
 #include <stdio.h>
 using namespace std;
 
+/*
+DOC: class block
+quick info: organizes the current block properties
+*/
+class block
+{
+	char shape[4][4];
+	int w;
+	int h;
+	int color;
+	int rotation;
+}
 
 /* 
 DOC: function drawFrame(int matrix board 12x21)
 used libs: stdio.h <- printf()
 used in: main() <- start of the main loop
-quick info:
+quick info: draws the board matrix
 */
 void drawFrame(int board[21][12])
 {
@@ -134,6 +146,7 @@ int main()
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 		};
 	
+	//? Draw the board matrix
 	drawFrame(board);
 
 	//TODO: REMOVE THIS PART
