@@ -10,6 +10,7 @@ Juego:
 Fisicas:
 
 + Crear gravedad
+    - Hacer documentacion
 - Usar deltatime
 
 
