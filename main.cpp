@@ -15,6 +15,20 @@ class block
 	int rotation;
 };
 
+void cls(){
+	system("cls");
+}
+
+void setCursor(int x, int y)
+{
+    HANDLE hcon;
+    hcon = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD dwPos;
+    dwPos.X = x;
+    dwPos.Y = y;
+    SetConsoleCursorPosition(hcon, dwPos);
+}
+
 /* 
 DOC: function drawFrame(int matrix board 12x21)
 used libs: stdio.h <- printf()
@@ -112,6 +126,71 @@ void drawFrame(int board[12][21])
 	printf("\033[0;37m");
 }
 
+void gravityTick(int list[], int lim){
+	for (int i = lim; i != 0; i--)
+	{
+		if (i != 1)
+		{
+			list[i] = list[i-1];
+		}
+		else
+		{
+			list[i] = 0;
+		}		
+	}
+	
+}
+
+bool checkStable(int board[12][21]){
+	for (int i = 1; i < 11; i++)
+	{
+		for (int j = 1; j < 20; j++)
+		{
+			if (board[i][j+1] == 0 && board[i][j] != 0)
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+
+void gravity(int board[12][21]) {
+	for (int i = 1; i < 11; i++)
+	{
+		for (int j = 1; j < 20; j++)
+		{
+			//printf("%i", board[i][j]);
+			if (board[i][j+1] == 0 && board[i][j] != 0)
+			{
+				gravityTick(board[i], j+1);
+				//printf("!");
+				j++;
+			}
+			else
+			{
+				//printf(" ");
+			}
+			
+		}
+		//printf("\n");
+	}
+}
+
+void game(int board[12][21]){
+	drawFrame(board);
+	while (checkStable(board) != true)
+	{
+		setCursor(0,0);
+		gravity(board);
+		drawFrame(board);
+		Sleep(1000);
+		
+	}
+	
+}
+
 /*
 DOC: function main
 quick info: this is the main function, self explanatory
@@ -140,13 +219,8 @@ int main()
 		
 	};
 	
-	//? Draw the board matrix
-	drawFrame(board);
-
-	
-	//TODO: REMOVE THIS PART
-	char* a;  //! TEMP; remove when not needed
-	scanf(a); //! TEMP; remove when not needed
-	return 0;
+	//? Start the game
+	cls();
+	game(board);
 	
 }
