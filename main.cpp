@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <windows.h>
 using namespace std;
 
 /*
@@ -12,7 +13,7 @@ class block
 	int h;
 	int color;
 	int rotation;
-}
+};
 
 /* 
 DOC: function drawFrame(int matrix board 12x21)
@@ -20,7 +21,7 @@ used libs: stdio.h <- printf()
 used in: main() <- start of the main loop
 quick info: draws the board matrix
 */
-void drawFrame(int board[21][12])
+void drawFrame(int board[12][21])
 {
 	/* 
 	DOC: private char block
@@ -35,7 +36,7 @@ void drawFrame(int board[21][12])
 		{
 			// DOC: private int cursor
 			// quick info: this variable represents the current selection in board, solves memory problems
-			int cursor = board[i][j];
+			int cursor = board[j][i];
 
 			/*
 			DOC: nested double for loop
@@ -122,35 +123,30 @@ int main()
 	quick info: this is the matrix where the game status will be saved
 	defined matrix board; size: 12x21; type: int 
 	*/
-	int board[21][12]= {
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 6, 6, 6, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 1},
-		{1, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 7, 7, 7, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 3, 3, 3, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 8, 8, 0, 1},
-		{1, 0, 0, 0, 4, 4, 0, 0, 8, 8, 0, 1},
-		{1, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 1},
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-		};
+	int board[12][21]={
+		
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, // col 0
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 1
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 2
+		{0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 1}, // col 3
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 1}, // col 4
+		{0, 0, 0, 0, 0, 0, 0, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 1}, // col 5
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1}, // col 6
+		{0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 1}, // col 7
+		{0, 0, 7, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 1}, // col 8
+		{0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 0, 8, 8, 8, 0, 0, 0, 0, 0, 0, 1}, // col 9
+		{0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 1}, // col 10
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}  // col 11
+		
+	};
 	
 	//? Draw the board matrix
 	drawFrame(board);
 
+	
 	//TODO: REMOVE THIS PART
 	char* a;  //! TEMP; remove when not needed
 	scanf(a); //! TEMP; remove when not needed
 	return 0;
+	
 }
