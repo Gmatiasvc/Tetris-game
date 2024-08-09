@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <windows.h>
+#include <fstream>
+#include <stdlib.h>
+
 using namespace std;
 
 /*
@@ -249,7 +252,7 @@ void clearRow(int board[12][21], int pos){
 	
 }
 
-void rowElimination(int board[12][21]){
+void rowElimination(int board[12][21], int &score){
 	bool rowState[24];
 	rowCheck(board, rowState);
 	int eliminations;
@@ -261,23 +264,24 @@ void rowElimination(int board[12][21]){
 		{
 			eliminations++;
 			clearRow(board, i);
-
+			score += 100;
 			if (rowState[i+1] == true)
 			{
 				eliminations++;
 				clearRow(board, i);
-
+				score += 200;
 				if (rowState[i+2] == true)
 				{
 					
 					eliminations++;
 					clearRow(board, i);
-
+					score += 200;
 					if (rowState[i+3] == true) // Nested if, with you till end of time <3
 					{
 						
 						eliminations++;
 						clearRow(board, i);
+						score += 300;
 					}
 					
 				}
@@ -288,19 +292,37 @@ void rowElimination(int board[12][21]){
 	frame(board);
 }
 
+void saveScore(int score){
+	fstream fscore("score.pb", ios::in);
+	char pbChar[12];
+	int pb;
+	fscore.getline(pbChar,12);
+	fscore.close();
+	pb = atoi(pbChar);
 
+	if (pb < score)
+	{
+		ofstream fscore("score.pb", ios::trunc);
+		fscore << score;
+		fscore.close();
+		printf("\nNuevo record personal alcanzado!!! %i puntos\n", score);
+	}
+	printf("%i\n",pb);
+	
+}
 
 
 /*
 DOC: function game(int matrix board 12x21)
 quick info: executes the game screen
 */
-void game(int board[12][21]){
-	
+void game(int board[12][21], int score){
+
 	frame(board);
 
-	rowElimination(board);
+	rowElimination(board, score);
 	
+	saveScore(score);
 }
 
 /*
@@ -330,9 +352,10 @@ int main()
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}  // col 11
 		
 	};
-	
+	int score = 0;
+
 	//? Start the game
 	cls();
-	game(board);
+	game(board,score);
 	
 }
