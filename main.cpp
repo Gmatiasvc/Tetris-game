@@ -15,10 +15,21 @@ class block
 	int rotation;
 };
 
+/*
+DOC: function cls()
+used libs: windows.h <- system()
+used in: main() <- clears the screen
+quick info: wipes the console output
+*/
 void cls(){
 	system("cls");
 }
 
+/*
+DOC: function setCursor(int x; int y)
+used in: game() <- sets the cursor for next draw
+quick info: places de cursor in the indicated coordinated
+*/
 void setCursor(int x, int y)
 {
     HANDLE hcon;
@@ -32,7 +43,7 @@ void setCursor(int x, int y)
 /* 
 DOC: function drawFrame(int matrix board 12x21)
 used libs: stdio.h <- printf()
-used in: main() <- start of the main loop
+used in: game() <- draw the current state of the board
 quick info: draws the board matrix
 */
 void drawFrame(int board[12][21])
@@ -126,6 +137,11 @@ void drawFrame(int board[12][21])
 	printf("\033[0;37m");
 }
 
+/*
+DOC: function gravityTick(int column variable size; int lim)
+used in: gravity() <- in the for loops
+quick info: makes entries fall until the limit is reached, int lim delimitates the floor
+*/
 void gravityTick(int list[], int lim){
 	for (int i = lim; i != 0; i--)
 	{
@@ -141,6 +157,11 @@ void gravityTick(int list[], int lim){
 	
 }
 
+/*
+DOC: function checkStable(int matrix board 12x21)
+used in: game() <- allow next input
+quick info: checks if the board does not have falling blocks
+*/
 bool checkStable(int board[12][21]){
 	for (int i = 1; i < 11; i++)
 	{
@@ -155,7 +176,12 @@ bool checkStable(int board[12][21]){
 	return true;
 }
 
-
+/* 
+DOC: function gravity(int matrix board 12x21)
+used libs: stdio.h <- printf() as DEBUG
+used in: game() <- makes the blocks fall
+quick info: makes the blocks fall to the bottom of the stack
+*/
 void gravity(int board[12][21]) {
 	for (int i = 1; i < 11; i++)
 	{
@@ -178,6 +204,10 @@ void gravity(int board[12][21]) {
 	}
 }
 
+/*
+DOC: function game(int matrix board 12x21)
+quick info: executes the game screen
+*/
 void game(int board[12][21]){
 	drawFrame(board);
 	while (checkStable(board) != true)
