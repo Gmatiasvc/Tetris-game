@@ -1,11 +1,12 @@
 Juego:
 
-- Crear sistema de puntos
++ Crear sistema de puntos
 - Crear menú de entrada al juego
 - Implementar música
 + Implementar eliminacion de lineas
 - Generar nuevos tetrónimos
 - Leer teclas presionadas 
++ Sistema de guardado de mejor puntaje
 
 Fisicas:
 
