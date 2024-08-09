@@ -3,14 +3,14 @@ Juego:
 - Crear sistema de puntos
 - Crear menú de entrada al juego
 - Implementar música
-- Implementar eliminacion de lineas
++ Implementar eliminacion de lineas
 - Generar nuevos tetrónimos
 - Leer teclas presionadas 
 
 Fisicas:
 
 + Crear gravedad
-    - Hacer documentacion
+    + Hacer documentacion
 - Usar deltatime
 
 
