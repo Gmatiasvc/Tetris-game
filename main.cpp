@@ -204,20 +204,102 @@ void gravity(int board[12][21]) {
 	}
 }
 
-/*
-DOC: function game(int matrix board 12x21)
-quick info: executes the game screen
-*/
-void game(int board[12][21]){
-	drawFrame(board);
+void frame(int board[12][21]){
 	while (checkStable(board) != true)
 	{
 		setCursor(0,0);
 		gravity(board);
 		drawFrame(board);
-		Sleep(1000);
+		Sleep(100);
+	}
+}
+
+void rowCheck(int board[12][21], bool rowState[20]){
+	bool rowComplete;
+	for (int i = 0; i < 20; i++)
+	{
+		rowComplete = true;
+		for (int j = 1; j < 11; j++)
+		{
+			if (board[j][i] == 0)
+			{
+				rowComplete = false;
+				break;
+			}	
+		}
+		if (rowComplete)
+		{
+			//printf("Row %i is complete\n",i);
+			rowState[i] = true;
+		}
+		else
+		{
+			//printf("Row %i is NOT complete\n",i);
+			rowState[i] = false;
+		}
 		
 	}
+}
+
+void clearRow(int board[12][21], int pos){
+	for (int i = 1; i < 11; i++)
+	{
+		board[i][pos] = 0;
+	}
+	
+}
+
+void rowElimination(int board[12][21]){
+	bool rowState[24];
+	rowCheck(board, rowState);
+	int eliminations;
+	for (int i = 0; i < 20; i++)
+	{
+		eliminations = 0;
+
+		if (rowState[i] == true)
+		{
+			eliminations++;
+			clearRow(board, i);
+
+			if (rowState[i+1] == true)
+			{
+				eliminations++;
+				clearRow(board, i);
+
+				if (rowState[i+2] == true)
+				{
+					
+					eliminations++;
+					clearRow(board, i);
+
+					if (rowState[i+3] == true) // Nested if, with you till end of time <3
+					{
+						
+						eliminations++;
+						clearRow(board, i);
+					}
+					
+				}
+				
+			}
+		}
+	}
+	frame(board);
+}
+
+
+
+
+/*
+DOC: function game(int matrix board 12x21)
+quick info: executes the game screen
+*/
+void game(int board[12][21]){
+	
+	frame(board);
+
+	rowElimination(board);
 	
 }
 
@@ -235,8 +317,8 @@ int main()
 	int board[12][21]={
 		
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, // col 0
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 1
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 2
+		{0, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 1
+		{0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 2
 		{0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 1}, // col 3
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 1}, // col 4
 		{0, 0, 0, 0, 0, 0, 0, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 1}, // col 5
