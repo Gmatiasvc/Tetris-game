@@ -240,20 +240,6 @@ void gravity(int board[12][21]) {
 	}
 }
 
-/*
-DOC: function frame(int matrix board 12x21)
-used in: game() <- draws the next frames
-quick info: draws frames at a variable fps until a stable state is reached
-*/
-void frame(int board[12][21], int fps, int &elimRows, int &lvl, int &score){
-	while (checkStable(board) != true)
-	{
-		setCursor(0,0);
-		gravity(board);
-		drawFrame(board,elimRows,lvl,score);
-		Sleep(int(1000/fps));
-	}
-}
 
 /*
 DOC: function rowCheck(int matrix board 12x21; bool list rowState |-> len:20)
@@ -358,7 +344,6 @@ void rowElimination(int board[12][21], int &score, int &fps, int &elimRows, int 
 			}
 		}
 	}
-	frame(board, fps, elimRows,lvl,score);
 }
 
 
@@ -565,13 +550,25 @@ DOC: function game(int matrix board 12x21)
 quick info: executes the game screen
 */
 void game(int board[12][21], int score, bool &gameOver){
-	int fps = 24;
+	int fps = 4;
 	int elimRows = 0;
 	int lvl = 0;
+	int key;
+
 	while (!gameOver)
 	{
-		frame(board,fps,elimRows,lvl, score);
+		while (checkStable(board) != true)
+		{
+			UserInput(gameOver, key);
+			setCursor(0,0);
+			gravity(board);
+			drawFrame(board,elimRows,lvl,score);
+			printf("%i",key);
+			Sleep(int(1000/fps));
+		}
+
 		rowElimination(board,score, fps, elimRows,lvl);
+
 		spawnBlock(board, gameOver);
 	}
 	
