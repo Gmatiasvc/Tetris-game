@@ -8,6 +8,9 @@ Juego:
     - Escribir documentacion
 - Leer teclas presionadas 
 + Sistema de guardado de mejor puntaje
+- Crear niveles
+- Contar filas eliminadas
++ implementar fps
 
 Fisicas:
 
@@ -19,7 +22,9 @@ Fisicas:
 Consola:
 
 + Crear sistema de renderizado
-
+- Mostrar nivel
+- Mostrar filas eliminadas
+- Mostrar puntaje
 
 Graficos:
 

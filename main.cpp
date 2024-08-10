@@ -227,13 +227,13 @@ DOC: function frame(int matrix board 12x21)
 used in: game() <- draws the next frames
 quick info: draws frames at a variable fps until a stable state is reached
 */
-void frame(int board[12][21]){
+void frame(int board[12][21], int fps){
 	while (checkStable(board) != true)
 	{
 		setCursor(0,0);
 		gravity(board);
 		drawFrame(board);
-		Sleep(5);
+		Sleep(int(1000/fps));
 	}
 }
 
@@ -292,7 +292,7 @@ quick info: removes rows that are full, with priority of 4 line combos, next 3 l
 ? 3 rows <- 500 pts
 ? 4 rows <- 800 pts
 */
-void rowElimination(int board[12][21], int &score){
+void rowElimination(int board[12][21], int &score, int &fps){
 	bool rowState[24];
 	rowCheck(board, rowState);
 	int eliminations;
@@ -329,7 +329,7 @@ void rowElimination(int board[12][21], int &score){
 			}
 		}
 	}
-	frame(board);
+	frame(board, fps);
 }
 
 
@@ -511,18 +511,20 @@ void spawnBlock(int board[12][21], bool &gameOver){
 	{
 		selBlock = block_Z_0;
 	}
+	int offset = 0;
 	for (int i = 0; i < selBlock.w ; i++)
 	{
 		for (int j = 0; j < selBlock.h; j++)
 		{
-			if(board[i+5][j] != 0)
+			if(board[i+5][j+1-offset] != 0)
 			{
 				gameOver = true;
-				return;
+				offset = -1;
+				
 			}
-			if (selBlock.shape[i][j])
+			if (selBlock.shape[i][j] == 1)
 			{
-				board[i+5][j] = selBlock.color;
+				board[i+5][j+1-offset] = selBlock.color;
 			}
 			}
 	}
@@ -534,19 +536,14 @@ DOC: function game(int matrix board 12x21)
 quick info: executes the game screen
 */
 void game(int board[12][21], int score, bool &gameOver){
-
-	//frame(board);
-
-	//rowElimination(board, score);
-	rowElimination(board,score);
-	spawnBlock(board,gameOver);
-	//frame(board);
-	drawFrame(board);
-	if(gameOver)
-		printf("yay");
-	else
-		printf("nay");
-
+	int fps = 4;
+	while (!gameOver)
+	{
+		frame(board,fps);
+		rowElimination(board,score, fps);
+		spawnBlock(board, gameOver);
+	}
+	
 	saveScore(score);
 }
 
