@@ -64,7 +64,7 @@ used libs: stdio.h <- printf()
 used in: game() <- draw the current state of the board
 quick info: draws the board matrix
 */
-void drawFrame(int board[12][21])
+void drawFrame(int board[12][21], int &elimRows, int &lvl, int &score)
 {
 	/* 
 	DOC: private char block
@@ -153,6 +153,24 @@ void drawFrame(int board[12][21])
 		
 	}
 	printf("\033[0;37m");
+
+	setCursor(30,1);
+	printf("Tetris modo facil");
+
+	setCursor(30,3);
+	printf("Puntaje",score);
+	setCursor(30,4);
+	printf("%i",score);
+
+	setCursor(30,6);
+	printf("Filas eliminadas",elimRows);
+	setCursor(30,7);
+	printf("%i",elimRows);
+	
+	setCursor(30,9);
+	printf("Nivel",lvl);
+	setCursor(30,10);
+	printf("%i",lvl);
 }
 
 /*
@@ -227,12 +245,12 @@ DOC: function frame(int matrix board 12x21)
 used in: game() <- draws the next frames
 quick info: draws frames at a variable fps until a stable state is reached
 */
-void frame(int board[12][21], int fps){
+void frame(int board[12][21], int fps, int &elimRows, int &lvl, int &score){
 	while (checkStable(board) != true)
 	{
 		setCursor(0,0);
 		gravity(board);
-		drawFrame(board);
+		drawFrame(board,elimRows,lvl,score);
 		Sleep(int(1000/fps));
 	}
 }
@@ -243,7 +261,7 @@ used libs: stdio.h <- printf() as DEBUG
 used in: rowElimination() <- get the number of completed rows
 quick info: fills a list with bools to indicate if a row is full
 */
-void rowCheck(int board[12][21], bool rowState[20]){
+void rowCheck(int board[12][21], bool rowState[24]){
 	bool rowComplete;
 	for (int i = 0; i < 20; i++)
 	{
@@ -253,7 +271,6 @@ void rowCheck(int board[12][21], bool rowState[20]){
 			if (board[j][i] == 0)
 			{
 				rowComplete = false;
-				break;
 			}	
 		}
 		if (rowComplete)
@@ -268,6 +285,7 @@ void rowCheck(int board[12][21], bool rowState[20]){
 		}
 		
 	}
+	
 }
 
 /*
@@ -292,8 +310,8 @@ quick info: removes rows that are full, with priority of 4 line combos, next 3 l
 ? 3 rows <- 500 pts
 ? 4 rows <- 800 pts
 */
-void rowElimination(int board[12][21], int &score, int &fps){
-	bool rowState[24];
+void rowElimination(int board[12][21], int &score, int &fps, int &elimRows, int &lvl){
+	bool rowState[24] = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 	rowCheck(board, rowState);
 	int eliminations;
 	for (int i = 0; i < 20; i++)
@@ -303,25 +321,36 @@ void rowElimination(int board[12][21], int &score, int &fps){
 		if (rowState[i] == true)
 		{
 			eliminations++;
+			elimRows++;
 			clearRow(board, i);
 			score += 100;
+			rowState[i] = false;
+			
 			if (rowState[i+1] == true)
 			{
 				eliminations++;
-				clearRow(board, i);
+				elimRows++;
+				clearRow(board, i+1);
 				score += 200;
+				rowState[i+1] = false;
+
 				if (rowState[i+2] == true)
 				{
 					
 					eliminations++;
-					clearRow(board, i);
+					elimRows++;
+					clearRow(board, i+2);
 					score += 200;
+					rowState[i+2] = false;
+
 					if (rowState[i+3] == true) // Nested if, with you till end of time <3
 					{
 						
 						eliminations++;
-						clearRow(board, i);
+						elimRows++;
+						clearRow(board, i+3);
 						score += 300;
+						rowState[i+3] = false;
 					}
 					
 				}
@@ -329,7 +358,7 @@ void rowElimination(int board[12][21], int &score, int &fps){
 			}
 		}
 	}
-	frame(board, fps);
+	frame(board, fps, elimRows,lvl,score);
 }
 
 
@@ -377,9 +406,9 @@ void saveScore(int score){
 		ofstream fscore("score.pb", ios::trunc);
 		fscore << score;
 		fscore.close();
+		setCursor(30,11);
 		printf("\nNuevo record personal alcanzado!!! %i puntos\n", score);
 	}
-	printf("%i\n",pb);
 	
 }
 
@@ -536,11 +565,13 @@ DOC: function game(int matrix board 12x21)
 quick info: executes the game screen
 */
 void game(int board[12][21], int score, bool &gameOver){
-	int fps = 4;
+	int fps = 24;
+	int elimRows = 0;
+	int lvl = 0;
 	while (!gameOver)
 	{
-		frame(board,fps);
-		rowElimination(board,score, fps);
+		frame(board,fps,elimRows,lvl, score);
+		rowElimination(board,score, fps, elimRows,lvl);
 		spawnBlock(board, gameOver);
 	}
 	
@@ -561,16 +592,16 @@ int main()
 	int board[12][21]={
 		
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, // col 0-
-		{0, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 1-
-		{0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 2-
-		{0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 1}, // col 5-
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 1}, // col 4-
-		{0, 0, 0, 0, 0, 0, 0, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 1}, // col 5
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1}, // col 6
-		{0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 1}, // col 7-
-		{0, 0, 0, 0, 7, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 1}, // col 8-
-		{0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 0, 8, 8, 8, 0, 0, 0, 0, 0, 0, 1}, // col 9-
-		{0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 1}, // col 10-
+		{0, 0, 0, 0, 0, 0, 4, 4, 5, 5, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 1-
+		{0, 0, 0, 0, 0, 4, 4, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 2-
+		{0, 0, 0, 2, 2, 2, 2, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 5, 1}, // col 3-
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 2, 2, 3, 4, 1}, // col 4-
+		{0, 0, 0, 0, 0, 0, 0, 6, 6, 6, 2, 2, 0, 0, 0, 0, 0, 0, 5, 0, 1}, // col 5
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 1, 4, 0, 0, 0, 0, 1}, // col 6
+		{0, 0, 0, 0, 0, 0, 7, 0, 0, 2, 2, 2, 0, 0, 0, 4, 4, 0, 0, 0, 1}, // col 7-
+		{0, 0, 0, 0, 7, 7, 7, 0, 0, 2, 2, 2, 0, 0, 0, 0, 4, 0, 0, 0, 1}, // col 8-
+		{0, 0, 0, 0, 0, 0, 3, 3, 3, 2, 2, 8, 8, 8, 0, 0, 0, 0, 0, 0, 1}, // col 9-
+		{0, 0, 0, 0, 0, 0, 0, 3, 0, 5, 5, 5, 0, 8, 0, 0, 0, 0, 0, 0, 1}, // col 10-
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}  // col 11-
 		
 	};
