@@ -141,7 +141,7 @@ void drawFrame(int board[12][21])
 }
 
 /*
-DOC: function gravityTick(int column variable size; int lim)
+DOC: function gravityTick(int column |-> ?; int lim)
 used in: gravity() <- in the for loops
 quick info: makes entries fall until the limit is reached, int lim delimitates the floor
 */
@@ -162,7 +162,7 @@ void gravityTick(int list[], int lim){
 
 /*
 DOC: function checkStable(int matrix board 12x21)
-used in: game() <- allow next input
+used in: frame() <- allow next draw
 quick info: checks if the board does not have falling blocks
 */
 bool checkStable(int board[12][21]){
@@ -182,7 +182,7 @@ bool checkStable(int board[12][21]){
 /* 
 DOC: function gravity(int matrix board 12x21)
 used libs: stdio.h <- printf() as DEBUG
-used in: game() <- makes the blocks fall
+used in: frame() <- makes the blocks fall
 quick info: makes the blocks fall to the bottom of the stack
 */
 void gravity(int board[12][21]) {
@@ -207,6 +207,11 @@ void gravity(int board[12][21]) {
 	}
 }
 
+/*
+DOC: function frame(int matrix board 12x21)
+used in: game() <- draws the next frames
+quick info: draws frames at a variable fps until a stable state is reached
+*/
 void frame(int board[12][21]){
 	while (checkStable(board) != true)
 	{
@@ -217,6 +222,12 @@ void frame(int board[12][21]){
 	}
 }
 
+/*
+DOC: function rowCheck(int matrix board 12x21; bool list rowState |-> len:20)
+used libs: stdio.h <- printf() as DEBUG
+used in: rowElimination() <- get the number of completed rows
+quick info: fills a list with bools to indicate if a row is full
+*/
 void rowCheck(int board[12][21], bool rowState[20]){
 	bool rowComplete;
 	for (int i = 0; i < 20; i++)
@@ -244,6 +255,11 @@ void rowCheck(int board[12][21], bool rowState[20]){
 	}
 }
 
+/*
+DOC: function clearRow(int matrix board 12x21; int pos)
+used in: rowElimination() <- remove the indicated row
+quick info: fills the indicated row with 0
+*/
 void clearRow(int board[12][21], int pos){
 	for (int i = 1; i < 11; i++)
 	{
@@ -252,6 +268,15 @@ void clearRow(int board[12][21], int pos){
 	
 }
 
+/*
+DOC: function rowElimination(int matrix board 12x21; ref >-> int score)
+used in game() <- eliminates full rows and assigns the respective points
+quick info: removes rows that are full, with priority of 4 line combos, next 3 line and so on. After that assings the respective score
+? 1 rows <- 100 pts
+? 2 rows <- 300 pts
+? 3 rows <- 500 pts
+? 4 rows <- 800 pts
+*/
 void rowElimination(int board[12][21], int &score){
 	bool rowState[24];
 	rowCheck(board, rowState);
@@ -292,6 +317,12 @@ void rowElimination(int board[12][21], int &score){
 	frame(board);
 }
 
+/*
+DOC: function saveScore(int score)
+used libs: fstream <- class fscore | stdio.h <- printf()
+used in game() <- save the personal best
+quick info: saves the personal best in the file score.pb. if the reached score is greater than the pb, it replaces it, oterwise, skips
+*/
 void saveScore(int score){
 	fstream fscore("score.pb", ios::in);
 	char pbChar[12];
