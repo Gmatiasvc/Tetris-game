@@ -2,6 +2,10 @@
 #include <windows.h>
 #include <fstream>
 #include <stdlib.h>
+#include <conio.h>
+#include <algorithm>
+#include <random>
+#include <time.h>
 
 using namespace std;
 
@@ -11,11 +15,12 @@ quick info: organizes the current block properties
 */
 class block
 {
-	char shape[4][4];
-	int w;
-	int h;
-	int color;
-	int rotation;
+	public:
+		int shape[4][4];
+		int w;
+		int h;
+		int color;
+		int rotation ;
 };
 
 /*
@@ -26,6 +31,16 @@ quick info: wipes the console output
 */
 void cls(){
 	system("cls");
+}
+
+void cMatrix(int a[4][4], int b[4][4]){
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			a[i][j] = b[i][j];
+		}
+	}
 }
 
 /*
@@ -88,42 +103,42 @@ void drawFrame(int board[12][21])
 				*/
 				switch (cursor)
 				{
-				case 1:
+				case 1: case 21:
 					//? render block border #969696
 					printf("\033[38;2;150;150;150m%s",block);
 					break;
 
-				case 2:
+				case 2: case 22:
 					//? render block game #ff0000 <-> red
 					printf("\033[38;2;255;0;0m%s",block);
 					break;
 				
-				case 3:
+				case 3: case 23:
 					//? render block game #a5500 <-> brown
 					printf("\033[38;2;170;85;0m%s",block);
 					break;
 				
-				case 4:
+				case 4: case 24:
 					//? render block game #00ff00 <-> green
 					printf("\033[38;2;0;255;0m%s",block);
 					break;
 				
-				case 5:
+				case 5: case 25:
 					//? render block game #00ffff <-> cyan
 					printf("\033[38;2;0;255;255m%s",block);
 					break;
 				
-				case 6:
+				case 6: case 26:
 					//? render block game #ffffff <-> white
 					printf("\033[38;2;255;255;255m%s",block);
 					break;
 				
-				case 7:
+				case 7: case 27:
 					//? render block game #ff00ff <-> magenta
 					printf("\033[38;2;255;0;255m%s",block);
 					break;
 				
-				case 8:
+				case 8: case 28:
 					//? render block game ##0000ff <-> blue
 					printf("\033[38;2;0;0;255m%s",block);
 					break;
@@ -218,7 +233,7 @@ void frame(int board[12][21]){
 		setCursor(0,0);
 		gravity(board);
 		drawFrame(board);
-		Sleep(100);
+		Sleep(5);
 	}
 }
 
@@ -317,6 +332,32 @@ void rowElimination(int board[12][21], int &score){
 	frame(board);
 }
 
+
+void UserInput(bool &gameOver, int &key) 
+{ 
+	// Checks if a key is pressed or not 
+	if (_kbhit()) { 
+		// Getting the pressed key 
+		switch (_getch()) { 
+		case 66: //down
+			key = 0; 
+			break; 
+		case 67: //left
+			key = 1; 
+			break; 
+		case 68: //right
+			key = 2; 
+			break; 
+		case 'x': // end
+			gameOver = true; 
+			break; 
+		default:
+			key = -1;
+			break;
+		} 
+	} 
+} 
+
 /*
 DOC: function saveScore(int score)
 used libs: fstream <- class fscore | stdio.h <- printf()
@@ -342,17 +383,170 @@ void saveScore(int score){
 	
 }
 
+void spawnBlock(int board[12][21], bool &gameOver){
+
+	block block_I_0;
+	block_I_0.color = 22; 
+	block_I_0.h = 4;
+	block_I_0.w = 1;
+	block_I_0.rotation = 0;
+	int shape[4][4]= { 
+		{1,1,1,1},
+		{0,0,0,0},
+		{0,0,0,0},
+		{0,0,0,0},
+	};
+	cMatrix(block_I_0.shape, shape);
+	
+	block block_J_0;
+	block_J_0.color = 26; 
+	block_J_0.h = 3;
+	block_J_0.w = 2;
+	block_J_0.rotation = 0;
+	int shape1[4][4]= { 
+		{1,1,1,0},
+		{0,0,1,0},
+		{0,0,0,0},
+		{0,0,0,0},
+	};
+	cMatrix(block_J_0.shape, shape1);
+
+
+	block block_L_0;
+	block_L_0.color = 27; 
+	block_L_0.h = 3;
+	block_L_0.w = 2;
+	block_L_0.rotation = 0;
+	int shape2[4][4]= { 
+		{0,0,1,0},
+		{1,1,1,0},
+		{0,0,0,0},
+		{0,0,0,0},
+	};
+	cMatrix(block_L_0.shape, shape2);
+
+	block block_O_0;
+	block_O_0.color = 28; 
+	block_O_0.h = 2;
+	block_O_0.w = 2;
+	block_O_0.rotation = 0;
+	int shape3[4][4]= { 
+		{1,1,0,0},
+		{1,1,0,0},
+		{0,0,0,0},
+		{0,0,0,0},
+	};
+	cMatrix(block_O_0.shape, shape3);
+
+
+	block block_S_0;
+	block_S_0.color = 24; 
+	block_S_0.h = 2;
+	block_S_0.w = 3;
+	block_S_0.rotation = 0;
+	int shape4[4][4]= { 
+		{1,0,0,0},
+		{1,1,0,0},
+		{0,1,0,0},
+		{0,0,0,0},
+	};
+	cMatrix(block_S_0.shape, shape4);
+
+
+	block block_T_0;
+	block_T_0.color = 23; 
+	block_T_0.h = 2;
+	block_T_0.w = 3;
+	block_T_0.rotation = 0;
+	int shape5[4][4]= { 
+		{1,0,0,0},
+		{1,1,0,0},
+		{1,0,0,0},
+		{0,0,0,0},
+	};
+	cMatrix(block_T_0.shape, shape5);
+
+
+	block block_Z_0;
+	block_Z_0.color = 25; 
+	block_Z_0.h = 2;
+	block_Z_0.w = 3;
+	block_Z_0.rotation = 0;
+	int shape6[4][4]= { 
+		{0,1,0,0},
+		{1,1,0,0},
+		{1,0,0,0},
+		{0,0,0,0},
+	};
+	cMatrix(block_Z_0.shape, shape6);
+
+	srand(time(0)); 
+	block selBlock;
+	int selBlockId = rand()%7;
+		
+
+	if (selBlockId == 0)
+		selBlock = block_I_0;
+	else if (selBlockId == 1)
+	{
+		selBlock = block_J_0;
+	}
+	else if (selBlockId == 2)
+	{
+		selBlock = block_L_0;
+	}
+	else if (selBlockId == 3)
+	{
+		selBlock = block_O_0;
+	}
+	else if (selBlockId == 4)
+	{
+		selBlock = block_S_0;
+	}
+	else if (selBlockId == 5)
+	{
+		selBlock = block_T_0;
+	}
+	else
+	{
+		selBlock = block_Z_0;
+	}
+	for (int i = 0; i < selBlock.w ; i++)
+	{
+		for (int j = 0; j < selBlock.h; j++)
+		{
+			if(board[i+5][j] != 0)
+			{
+				gameOver = true;
+				return;
+			}
+			if (selBlock.shape[i][j])
+			{
+				board[i+5][j] = selBlock.color;
+			}
+			}
+	}
+}
+
 
 /*
 DOC: function game(int matrix board 12x21)
 quick info: executes the game screen
 */
-void game(int board[12][21], int score){
+void game(int board[12][21], int score, bool &gameOver){
 
-	frame(board);
+	//frame(board);
 
-	rowElimination(board, score);
-	
+	//rowElimination(board, score);
+	rowElimination(board,score);
+	spawnBlock(board,gameOver);
+	//frame(board);
+	drawFrame(board);
+	if(gameOver)
+		printf("yay");
+	else
+		printf("nay");
+
 	saveScore(score);
 }
 
@@ -369,24 +563,25 @@ int main()
 	*/
 	int board[12][21]={
 		
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, // col 0
-		{0, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 1
-		{0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 2
-		{0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 1}, // col 3
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 1}, // col 4
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, // col 0-
+		{0, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 1-
+		{0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 2-
+		{0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 1}, // col 5-
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 1}, // col 4-
 		{0, 0, 0, 0, 0, 0, 0, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 1}, // col 5
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1}, // col 6
-		{0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 1}, // col 7
-		{0, 0, 7, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 1}, // col 8
-		{0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 0, 8, 8, 8, 0, 0, 0, 0, 0, 0, 1}, // col 9
-		{0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 1}, // col 10
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}  // col 11
+		{0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 1}, // col 7-
+		{0, 0, 0, 0, 7, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 1}, // col 8-
+		{0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 0, 8, 8, 8, 0, 0, 0, 0, 0, 0, 1}, // col 9-
+		{0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 1}, // col 10-
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}  // col 11-
 		
 	};
 	int score = 0;
+	bool gameOver = false;
 
 	//? Start the game
 	cls();
-	game(board,score);
+	game(board, score, gameOver);
 	
 }
