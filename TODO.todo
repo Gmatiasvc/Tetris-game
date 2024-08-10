@@ -10,7 +10,8 @@ Juego:
 + Sistema de guardado de mejor puntaje
 - Crear niveles
 - Contar filas eliminadas
-+ implementar fps
++ implementar fps  
+- Escribir documentacion
 
 Fisicas:
 
@@ -23,7 +24,9 @@ Consola:
 
 + Crear sistema de renderizado
 + Mostrar nivel
+    - Escribir documentacion
 + Mostrar filas eliminadas
+    - Escribir documentacion
 - Mostrar puntaje
 
 Graficos:
