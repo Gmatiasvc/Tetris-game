@@ -33,7 +33,7 @@ void cls(){
 	system("cls");
 }
 
-void cMatrix(int a[4][4], int b[4][4]){
+void copyMatrix(int a[4][4], int b[4][4]){
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
@@ -171,6 +171,22 @@ void drawFrame(int board[12][21], int &elimRows, int &lvl, int &score)
 	printf("Nivel",lvl);
 	setCursor(30,10);
 	printf("%i",lvl);
+}
+
+void makeAllPermanent(int board[12][21]){
+	for (int i = 0; i < 12; i++)
+	{
+		for (int j = 0; j < 21; j++)
+		{
+			if (board[i][j] >20)
+			{
+				board[i][j] -= 20;
+			}
+			
+		}
+		
+	}
+	
 }
 
 /*
@@ -347,27 +363,27 @@ void rowElimination(int board[12][21], int &score, int &fps, int &elimRows, int 
 }
 
 
-void UserInput(bool &gameOver, int &key) 
+void UserInput(int &key) 
 { 
-	// Checks if a key is pressed or not 
+	
 	if (_kbhit()) { 
-		// Getting the pressed key 
+
 		switch (_getch()) { 
-		case 66: //down
-			key = 0; 
-			break; 
-		case 67: //left
+		case 'a': 
 			key = 1; 
 			break; 
-		case 68: //right
+		case 'd': 
 			key = 2; 
 			break; 
-		case 'x': // end
-			gameOver = true; 
+		case 'w': 
+			key = 4;
 			break; 
-		default:
-			key = -1;
-			break;
+		case 's': 
+			key = 0; 
+			break; 
+		case 'x': 
+			key = 3;  
+			break; 
 		} 
 	} 
 } 
@@ -397,7 +413,7 @@ void saveScore(int score){
 	
 }
 
-void spawnBlock(int board[12][21], bool &gameOver){
+void spawnBlock(int board[12][21], bool &gameOver, block &selBlock){
 
 	block block_I_0;
 	block_I_0.color = 22; 
@@ -410,7 +426,7 @@ void spawnBlock(int board[12][21], bool &gameOver){
 		{0,0,0,0},
 		{0,0,0,0},
 	};
-	cMatrix(block_I_0.shape, shape);
+	copyMatrix(block_I_0.shape, shape);
 	
 	block block_J_0;
 	block_J_0.color = 26; 
@@ -423,7 +439,7 @@ void spawnBlock(int board[12][21], bool &gameOver){
 		{0,0,0,0},
 		{0,0,0,0},
 	};
-	cMatrix(block_J_0.shape, shape1);
+	copyMatrix(block_J_0.shape, shape1);
 
 
 	block block_L_0;
@@ -437,7 +453,7 @@ void spawnBlock(int board[12][21], bool &gameOver){
 		{0,0,0,0},
 		{0,0,0,0},
 	};
-	cMatrix(block_L_0.shape, shape2);
+	copyMatrix(block_L_0.shape, shape2);
 
 	block block_O_0;
 	block_O_0.color = 28; 
@@ -450,7 +466,7 @@ void spawnBlock(int board[12][21], bool &gameOver){
 		{0,0,0,0},
 		{0,0,0,0},
 	};
-	cMatrix(block_O_0.shape, shape3);
+	copyMatrix(block_O_0.shape, shape3);
 
 
 	block block_S_0;
@@ -464,7 +480,7 @@ void spawnBlock(int board[12][21], bool &gameOver){
 		{0,1,0,0},
 		{0,0,0,0},
 	};
-	cMatrix(block_S_0.shape, shape4);
+	copyMatrix(block_S_0.shape, shape4);
 
 
 	block block_T_0;
@@ -478,7 +494,7 @@ void spawnBlock(int board[12][21], bool &gameOver){
 		{1,0,0,0},
 		{0,0,0,0},
 	};
-	cMatrix(block_T_0.shape, shape5);
+	copyMatrix(block_T_0.shape, shape5);
 
 
 	block block_Z_0;
@@ -492,10 +508,9 @@ void spawnBlock(int board[12][21], bool &gameOver){
 		{1,0,0,0},
 		{0,0,0,0},
 	};
-	cMatrix(block_Z_0.shape, shape6);
+	copyMatrix(block_Z_0.shape, shape6);
 
 	srand(time(0)); 
-	block selBlock;
 	int selBlockId = rand()%7;
 		
 
@@ -544,6 +559,47 @@ void spawnBlock(int board[12][21], bool &gameOver){
 	}
 }
 
+void moveBlock(int board[12][21], int direction, block selBlock, int &xOrigin){
+
+	int temp;
+
+	if (xOrigin > 1 && xOrigin < 11 - selBlock.w )
+	{ 
+		if (direction == 1)
+		{
+			for (int i = 1; i < 11; i++)
+			{
+				for (int j = 1; j < 20; j++)
+				{
+					if (board[i][j] > 20)
+					{
+						temp = board[i][j];
+						board[i][j] = board[i-1][j];
+						board[i-1][j] = temp;
+					}
+				}
+			}
+			xOrigin--;
+		}
+
+		if (direction == 0)
+		{
+			for (int i = 10; i > 0; i--)
+			{
+				for (int j = 1; j < 20; j++)
+				{
+					if (board[i][j] > 20)
+					{
+						temp = board[i+1][j];
+						board[i+1][j] = board[i][j];
+						board[i][j] = temp;
+					}
+				}
+			}
+			xOrigin++;
+		}
+	}	
+}
 
 /*
 DOC: function game(int matrix board 12x21)
@@ -553,23 +609,58 @@ void game(int board[12][21], int score, bool &gameOver){
 	int fps = 4;
 	int elimRows = 0;
 	int lvl = 0;
-	int key;
+	int key = -1;
+	int xOrigin;
+	block selBlock;
 
 	while (!gameOver)
 	{
+		xOrigin = 5;
 		while (checkStable(board) != true)
 		{
-			UserInput(gameOver, key);
+			UserInput(key);
+			
+			if (key == 3)
+			{
+				gameOver = true;
+				break;
+			}
+			else if (key == 1) //left event
+			{
+				key = 0;
+				moveBlock(board, 1, selBlock, xOrigin);
+			}
+			else if (key == 2) //right event
+			{
+				key = 0;
+				moveBlock(board, 0, selBlock, xOrigin);
+			}
+			else if (key == 0) //down event
+			{
+				fps = 6;
+				key = 0;
+			}
+			else if (key == 4) //up event
+			{
+				
+				fps = 2;
+				key = 4;
+			}
+			
+			
 			setCursor(0,0);
 			gravity(board);
+			//moveBlock(board,1,selBlock,xOrigin);
 			drawFrame(board,elimRows,lvl,score);
-			printf("%i",key);
+			
+			printf("  | %i | %i |", key,fps);
+
 			Sleep(int(1000/fps));
 		}
 
 		rowElimination(board,score, fps, elimRows,lvl);
-
-		spawnBlock(board, gameOver);
+		makeAllPermanent(board);
+		spawnBlock(board, gameOver, selBlock);
 	}
 	
 	saveScore(score);
