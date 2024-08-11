@@ -20,7 +20,6 @@ class block
 		int w;
 		int h;
 		int color;
-		int rotation ;
 };
 
 /*
@@ -419,47 +418,125 @@ void spawnBlock(int board[12][21], bool &gameOver, block &selBlock){
 	block_I_0.color = 22; 
 	block_I_0.h = 4;
 	block_I_0.w = 1;
-	block_I_0.rotation = 0;
-	int shape[4][4]= { 
+	int shape00[4][4]= { 
 		{1,1,1,1},
 		{0,0,0,0},
 		{0,0,0,0},
 		{0,0,0,0},
 	};
-	copyMatrix(block_I_0.shape, shape);
+	copyMatrix(block_I_0.shape, shape00);
+
+	block block_I_1;
+	block_I_1.color = 22; 
+	block_I_1.h = 1;
+	block_I_1.w = 4;
+	int shape01[4][4]= { 
+		{1,0,0,0},
+		{1,0,0,0},
+		{1,0,0,0},
+		{1,0,0,0},
+	};
+	copyMatrix(block_I_1.shape, shape01);
 	
 	block block_J_0;
 	block_J_0.color = 26; 
+	block_J_0.h = 2;
+	block_J_0.w = 3;
+	int shape10[4][4]= { 
+		{0,1,0,0},
+		{0,1,0,0},
+		{1,1,0,0},
+		{0,0,0,0},
+	};
+	copyMatrix(block_J_0.shape, shape10);
+
+	
+	block block_J_1;
+	block_J_0.color = 26; 
 	block_J_0.h = 3;
 	block_J_0.w = 2;
-	block_J_0.rotation = 0;
-	int shape1[4][4]= { 
+	int shape11[4][4]= { 
 		{1,1,1,0},
 		{0,0,1,0},
 		{0,0,0,0},
 		{0,0,0,0},
 	};
-	copyMatrix(block_J_0.shape, shape1);
-
+	copyMatrix(block_J_0.shape, shape11);
+	
+	block block_J_2;
+	block_J_0.color = 26; 
+	block_J_0.h = 2;
+	block_J_0.w = 3;
+	int shape12[4][4]= { 
+		{1,1,0,0},
+		{1,0,0,0},
+		{1,0,0,0},
+		{0,0,0,0},
+	};
+	copyMatrix(block_J_0.shape, shape12);
+	
+	block block_J_3;
+	block_J_0.color = 26; 
+	block_J_0.h = 3;
+	block_J_0.w = 2;
+	int shape13[4][4]= { 
+		{1,0,0,0},
+		{1,1,1,0},
+		{0,0,0,0},
+		{0,0,0,0},
+	};
+	copyMatrix(block_J_0.shape, shape13);
 
 	block block_L_0;
 	block_L_0.color = 27; 
 	block_L_0.h = 3;
 	block_L_0.w = 2;
-	block_L_0.rotation = 0;
-	int shape2[4][4]= { 
+	int shape20[4][4]= { 
 		{0,0,1,0},
 		{1,1,1,0},
 		{0,0,0,0},
 		{0,0,0,0},
 	};
-	copyMatrix(block_L_0.shape, shape2);
+	copyMatrix(block_L_0.shape, shape20);
+
+	block block_L_1;
+	block_L_1.color = 27; 
+	block_L_1.h = 2;
+	block_L_1.w = 3;
+	int shape21[4][4]= { 
+		{1,0,0,0},
+		{1,0,0,0},
+		{1,1,0,0},
+		{0,0,0,0},
+	};
+	copyMatrix(block_L_1.shape, shape21);
+	block block_L_2;
+	block_L_2.color = 27; 
+	block_L_2.h = 3;
+	block_L_2.w = 2;
+	int shape22[4][4]= { 
+		{1,1,1,0},
+		{1,0,0,0},
+		{0,0,0,0},
+		{0,0,0,0},
+	};
+	copyMatrix(block_L_2.shape, shape22);
+	block block_L_3;
+	block_L_3.color = 27; 
+	block_L_3.h = 2;
+	block_L_3.w = 3;
+	int shape23[4][4]= { 
+		{1,1,0,0},
+		{0,1,0,0},
+		{0,1,0,0},
+		{0,0,0,0},
+	};
+	copyMatrix(block_L_3.shape, shape23);
 
 	block block_O_0;
 	block_O_0.color = 28; 
 	block_O_0.h = 2;
 	block_O_0.w = 2;
-	block_O_0.rotation = 0;
 	int shape3[4][4]= { 
 		{1,1,0,0},
 		{1,1,0,0},
@@ -473,73 +550,181 @@ void spawnBlock(int board[12][21], bool &gameOver, block &selBlock){
 	block_S_0.color = 24; 
 	block_S_0.h = 2;
 	block_S_0.w = 3;
-	block_S_0.rotation = 0;
-	int shape4[4][4]= { 
+	int shape40[4][4]= { 
 		{1,0,0,0},
 		{1,1,0,0},
 		{0,1,0,0},
 		{0,0,0,0},
 	};
-	copyMatrix(block_S_0.shape, shape4);
+	copyMatrix(block_S_0.shape, shape40);
 
+	block block_S_1;
+	block_S_1.color = 24; 
+	block_S_1.h = 3;
+	block_S_1.w = 2;
+	int shape41[4][4]= { 
+		{0,1,1,0},
+		{1,1,0,0},
+		{0,0,0,0},
+		{0,0,0,0},
+	};
+	copyMatrix(block_S_1.shape, shape41);
 
+	
 	block block_T_0;
 	block_T_0.color = 23; 
 	block_T_0.h = 2;
 	block_T_0.w = 3;
-	block_T_0.rotation = 0;
-	int shape5[4][4]= { 
+	int shape50[4][4]= { 
 		{1,0,0,0},
 		{1,1,0,0},
 		{1,0,0,0},
 		{0,0,0,0},
 	};
-	copyMatrix(block_T_0.shape, shape5);
+	copyMatrix(block_T_0.shape, shape50);
 
+	block block_T_1;
+	block_T_1.color = 23; 
+	block_T_1.h = 3;
+	block_T_1.w = 2;
+	int shape51[4][4]= { 
+		{0,1,0,0},
+		{1,1,1,0},
+		{0,0,0,0},
+		{0,0,0,0},
+	};
+	copyMatrix(block_T_1.shape, shape51);
+
+	block block_T_2;
+	block_T_2.color = 23; 
+	block_T_2.h = 2;
+	block_T_2.w = 3;
+	int shape52[4][4]= { 
+		{0,1,0,0},
+		{1,1,0,0},
+		{0,1,0,0},
+		{0,0,0,0},
+	};
+	copyMatrix(block_T_2.shape, shape52);
+
+	block block_T_3;
+	block_T_3.color = 23; 
+	block_T_3.h = 3;
+	block_T_3.w = 2;
+	int shape53[4][4]= { 
+		{1,1,1,0},
+		{0,1,0,0},
+		{0,0,0,0},
+		{0,0,0,0},
+	};
+	copyMatrix(block_T_3.shape, shape53);
 
 	block block_Z_0;
 	block_Z_0.color = 25; 
 	block_Z_0.h = 2;
 	block_Z_0.w = 3;
-	block_Z_0.rotation = 0;
-	int shape6[4][4]= { 
+	int shape60[4][4]= { 
 		{0,1,0,0},
 		{1,1,0,0},
 		{1,0,0,0},
 		{0,0,0,0},
 	};
-	copyMatrix(block_Z_0.shape, shape6);
+	copyMatrix(block_Z_0.shape, shape60);
 
+	block block_Z_1;
+	block_Z_1.color = 25; 
+	block_Z_1.h = 2;
+	block_Z_1.w = 3;
+	int shape61[4][4]= { 
+		{0,1,0,0},
+		{1,1,0,0},
+		{1,0,0,0},
+		{0,0,0,0},
+	};
+	copyMatrix(block_Z_1.shape, shape61);
+	
 	srand(time(0)); 
-	int selBlockId = rand()%7;
+	int selBlockId = rand()%18;
 		
 
 	if (selBlockId == 0)
+	{
 		selBlock = block_I_0;
+	}
+		
 	else if (selBlockId == 1)
 	{
-		selBlock = block_J_0;
+		selBlock = block_I_1;
 	}
 	else if (selBlockId == 2)
 	{
-		selBlock = block_L_0;
+		selBlock = block_J_0;
 	}
 	else if (selBlockId == 3)
 	{
-		selBlock = block_O_0;
+		selBlock = block_J_1;
 	}
 	else if (selBlockId == 4)
 	{
-		selBlock = block_S_0;
+		selBlock = block_J_2;
 	}
 	else if (selBlockId == 5)
 	{
+		selBlock = block_J_3;
+	}
+	else if (selBlockId == 6)
+	{
+		selBlock = block_L_0;
+	}
+	else if (selBlockId == 7)
+	{
+		selBlock = block_L_1;
+	}
+	else if (selBlockId == 8)
+	{
+		selBlock = block_L_2;
+	}
+	else if (selBlockId == 9)
+	{
+		selBlock = block_L_3;
+	}
+	else if (selBlockId == 10)
+	{
+		selBlock = block_O_0;
+	}
+	else if (selBlockId == 11)
+	{
+		selBlock = block_S_0;
+	}
+	else if (selBlockId == 12)
+	{
+		selBlock = block_S_1;
+	}
+	else if (selBlockId == 13)
+	{
 		selBlock = block_T_0;
 	}
-	else
+	else if (selBlockId == 14)
+	{
+		selBlock = block_T_1;
+	}
+	else if (selBlockId == 15)
+	{
+		selBlock = block_T_2;
+	}
+	else if (selBlockId == 16)
+	{
+		selBlock = block_T_3;
+	}
+	else if (selBlockId == 17)
 	{
 		selBlock = block_Z_0;
 	}
+	else
+	{
+		selBlock = block_Z_1;
+	}
+
 	int offset = 0;
 	for (int i = 0; i < selBlock.w ; i++)
 	{
@@ -653,7 +838,7 @@ void game(int board[12][21], int score, bool &gameOver){
 			//moveBlock(board,1,selBlock,xOrigin);
 			drawFrame(board,elimRows,lvl,score);
 			
-			printf("  | %i | %i |", key,fps);
+			//printf("  | %i | %i |", key,fps);
 
 			Sleep(int(1000/fps));
 		}
@@ -683,7 +868,7 @@ int main()
 		{0, 0, 0, 0, 0, 0, 4, 4, 5, 5, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 1-
 		{0, 0, 0, 0, 0, 4, 4, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 2-
 		{0, 0, 0, 2, 2, 2, 2, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 5, 1}, // col 3-
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 2, 2, 3, 4, 1}, // col 4-
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3, 4, 1}, // col 4-
 		{0, 0, 0, 0, 0, 0, 0, 6, 6, 6, 2, 2, 0, 0, 0, 0, 0, 0, 5, 0, 1}, // col 5
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 1, 4, 0, 0, 0, 0, 1}, // col 6
 		{0, 0, 0, 0, 0, 0, 7, 0, 0, 2, 2, 2, 0, 0, 0, 4, 4, 0, 0, 0, 1}, // col 7-
@@ -695,7 +880,6 @@ int main()
 	};
 	int score = 0;
 	bool gameOver = false;
-
 	//? Start the game
 	cls();
 	game(board, score, gameOver);

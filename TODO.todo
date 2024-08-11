@@ -6,10 +6,10 @@ Juego:
 + Implementar eliminacion de lineas
 + Generar nuevos tetrónimos
     - Escribir documentacion
-- Leer teclas presionadas 
++ Leer teclas presionadas 
 + Sistema de guardado de mejor puntaje
 - Crear niveles
-- Contar filas eliminadas
++ Contar filas eliminadas
 + implementar fps  
 - Escribir documentacion
 
@@ -27,7 +27,7 @@ Consola:
     - Escribir documentacion
 + Mostrar filas eliminadas
     - Escribir documentacion
-- Mostrar puntaje
++ Mostrar puntaje
 
 Graficos:
 
