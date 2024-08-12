@@ -44,6 +44,17 @@ void copyMatrix(int a[4][4], int b[4][4])
 	}
 }
 
+void copyBoard(int target[12][21], int origin[12][21])
+{
+	for (int i = 0; i < 12; i++)
+	{
+		for (int j = 0; j < 21; j++)
+		{
+			target[i][j] = origin[i][j];
+		}
+	}
+}
+
 /*
 DOC: function setCursor(int x; int y)
 used in: game() <- sets the cursor for next draw
@@ -67,6 +78,7 @@ quick info: draws the board matrix
 */
 void drawFrame(int board[12][21], int &elimRows, int &lvl, int &score)
 {
+	setCursor(0, 0);
 	/*
 	DOC: private char block
 	quick info: this is the main block used in the drawing function in console mode
@@ -727,10 +739,10 @@ void spawnBlock(int board[12][21], bool &gameOver, block &selBlock)
 
 void moveBlock(int board[12][21], int direction, block selBlock, int &xOrigin)
 {
-
+	int buffer[12][21];
 	int temp;
-
-	if (xOrigin > 1 && xOrigin < 11 - selBlock.w)
+	copyBoard(buffer, board);
+	if (xOrigin > 0 && xOrigin < 12 - selBlock.w)
 	{
 		if (direction == 1)
 		{
@@ -738,15 +750,20 @@ void moveBlock(int board[12][21], int direction, block selBlock, int &xOrigin)
 			{
 				for (int j = 1; j < 20; j++)
 				{
-					if (board[i][j] > 20)
+					if (buffer[i][j] > 20)
 					{
-						temp = board[i][j];
-						board[i][j] = board[i - 1][j];
-						board[i - 1][j] = temp;
+						temp = buffer[i][j];
+						buffer[i][j] = buffer[i - 1][j];
+						buffer[i - 1][j] = temp;
+					}
+					if (buffer[i][j] == 1)
+					{
+						return;
 					}
 				}
 			}
 			xOrigin--;
+			copyBoard(board, buffer);
 		}
 
 		if (direction == 0)
@@ -755,15 +772,20 @@ void moveBlock(int board[12][21], int direction, block selBlock, int &xOrigin)
 			{
 				for (int j = 1; j < 20; j++)
 				{
-					if (board[i][j] > 20)
+					if (buffer[i][j] > 20)
 					{
-						temp = board[i + 1][j];
-						board[i + 1][j] = board[i][j];
-						board[i][j] = temp;
+						temp = buffer[i + 1][j];
+						buffer[i + 1][j] = buffer[i][j];
+						buffer[i][j] = temp;
+					}
+					if (buffer[i][j] == 1)
+					{
+						return;
 					}
 				}
 			}
 			xOrigin++;
+			copyBoard(board, buffer);
 		}
 	}
 }
@@ -819,13 +841,20 @@ void game(int board[12][21], int score, bool &gameOver)
 			gravity(board);
 			// moveBlock(board,1,selBlock,xOrigin);
 			drawFrame(board, elimRows, lvl, score);
-
 			// printf("  | %i | %i |", key,fps);
 
 			Sleep(int(1000 / fps));
 		}
+		// drawFrame(board, elimRows, lvl, score);
 
 		rowElimination(board, score, fps, elimRows, lvl);
+		while (checkStable(board) != true)
+		{
+			gravity(board);
+			drawFrame(board, elimRows, lvl, score);
+			Sleep(int(500 / fps));
+		}
+
 		makeAllPermanent(board);
 		spawnBlock(board, gameOver, selBlock);
 	}
