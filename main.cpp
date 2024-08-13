@@ -84,15 +84,15 @@ void drawFrame(int board[12][21], int &elimRows, int &lvl, int &score)
 	quick info: this is the main block used in the drawing function in console mode
 	defined str block; len: 2
 	*/
-	char block[3] = {"\xDB\xDB"};
-
+	char block[3] = {"\xDB\xDB"}; //██
+	int cursor;
 	for (int i = 0; i < 21; i++)
 	{
 		for (int j = 0; j < 12; j++)
 		{
 			// DOC: private int cursor
 			// quick info: this variable represents the current selection in board, solves memory problems
-			int cursor = board[j][i];
+			cursor = board[j][i];
 
 			/*
 			DOC: nested double for loop
@@ -425,7 +425,7 @@ void saveScore(int score)
 		fscore << score;
 		fscore.close();
 		setCursor(30, 11);
-		printf("\nNuevo record personal alcanzado!!! %i puntos\n", score);
+		printf("Nuevo record personal alcanzado!!! %i puntos", score);
 	}
 }
 
@@ -796,7 +796,7 @@ quick info: executes the game screen
 */
 void game(int board[12][21], int score, bool &gameOver)
 {
-	int fps = 4;
+	int fps = 6;
 	int elimRows = 0;
 	int lvl = 0;
 	int key = -1;
@@ -810,7 +810,7 @@ void game(int board[12][21], int score, bool &gameOver)
 		{
 			UserInput(key);
 
-			if (key == 3)
+			if (key == 3) // x key event
 			{
 				gameOver = true;
 				break;
@@ -881,7 +881,7 @@ int main()
 		{0, 0, 0, 2, 2, 2, 2, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 5, 1}, // col 3-
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3, 4, 1}, // col 4-
 		{0, 0, 0, 0, 0, 0, 0, 6, 6, 6, 2, 2, 0, 0, 0, 0, 0, 0, 5, 0, 1}, // col 5
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 1, 4, 0, 0, 0, 0, 1}, // col 6
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 2, 4, 0, 0, 0, 0, 1}, // col 6
 		{0, 0, 0, 0, 0, 0, 7, 0, 0, 2, 2, 2, 0, 0, 0, 4, 4, 0, 0, 0, 1}, // col 7-
 		{0, 0, 0, 0, 7, 7, 7, 0, 0, 2, 2, 2, 0, 0, 0, 0, 4, 0, 0, 0, 1}, // col 8-
 		{0, 0, 0, 0, 0, 0, 3, 3, 3, 2, 2, 8, 8, 8, 0, 0, 0, 0, 0, 0, 1}, // col 9-
