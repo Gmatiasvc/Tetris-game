@@ -84,7 +84,7 @@ void drawFrame(int board[12][21], int &elimRows, int &lvl, int &score)
 	quick info: this is the main block used in the drawing function in console mode
 	defined str block; len: 2
 	*/
-	char block[3] = {"\xDB\xDB"}; //██
+	char block[3] = {"\xDB\xDB"}; // ██
 	int cursor;
 	for (int i = 0; i < 21; i++)
 	{
@@ -386,18 +386,23 @@ void UserInput(int &key)
 		switch (_getch())
 		{
 		case 'a':
+		case 'A':
 			key = 1;
 			break;
 		case 'd':
+		case 'D':
 			key = 2;
 			break;
 		case 'w':
+		case 'W':
 			key = 4;
 			break;
 		case 's':
+		case 'S':
 			key = 0;
 			break;
 		case 'x':
+		case 'X':
 			key = 3;
 			break;
 		}
@@ -790,6 +795,77 @@ void moveBlock(int board[12][21], int direction, block selBlock, int &xOrigin)
 	}
 }
 
+bool startScreen()
+{
+
+	cls();
+	fstream fscore("score.pb", ios::in);
+	char pbChar[12];
+	int pb;
+	int sel;
+	fscore.getline(pbChar, 12);
+	fscore.close();
+	pb = atoi(pbChar);
+
+	setCursor(13, 1);
+	printf("\033[1;4mTetris facil\033[0m");
+	setCursor(5, 4);
+	printf("Presiona \033[5;7mENTER\033[0m para iniciar");
+	setCursor(8, 6);
+	printf("Presiona \033[5mX\033[0m para salir");
+	setCursor(8, 8);
+	printf("\033[3mMejor puntaje: %i\033[0m", pb);
+
+	sel = _getch();
+
+	if (sel == 13)
+		return true;
+
+	else if (sel == 120 || sel == 88)
+	{
+		return false;
+	}
+}
+
+bool endScreen(int score)
+{
+	cls();
+	fstream fscore("score.pb", ios::in);
+	char pbChar[12];
+	int pb;
+	int sel;
+	fscore.getline(pbChar, 12);
+	fscore.close();
+	pb = atoi(pbChar);
+
+	setCursor(8, 1);
+	printf("\033[1mJuego terminado\033[0m");
+	setCursor(5, 4);
+	printf("Puntaje alcanzado: %i", score);
+	setCursor(5, 6);
+	printf("Mayor puntaje: %i", pb);
+	if (score == pb)
+	{
+		setCursor(6, 8);
+		printf("\033[38;2;253;220;92m Nuevo Record!!!\033[0m");
+	}
+
+	setCursor(6, 14);
+	printf("REINTENTAR [\033[5;7mENTER\033[0m]");
+	setCursor(9, 16);
+	printf("SALIR [\033[5mX\033[0m]");
+
+	sel = _getch();
+
+	if (sel == 13)
+		return true;
+
+	else if (sel == 120 || sel == 88)
+	{
+		return false;
+	}
+}
+
 /*
 DOC: function game(int matrix board 12x21)
 quick info: executes the game screen
@@ -873,25 +949,43 @@ int main()
 	quick info: this is the matrix where the game status will be saved
 	defined matrix board; size: 12x21; type: int
 	*/
-	int board[12][21] = {
-
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, // col 0-
-		{0, 0, 0, 0, 0, 0, 4, 4, 5, 5, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 1-
-		{0, 0, 0, 0, 0, 4, 4, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 2-
-		{0, 0, 0, 2, 2, 2, 2, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 5, 1}, // col 3-
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3, 4, 1}, // col 4-
-		{0, 0, 0, 0, 0, 0, 0, 6, 6, 6, 2, 2, 0, 0, 0, 0, 0, 0, 5, 0, 1}, // col 5
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 2, 4, 0, 0, 0, 0, 1}, // col 6
-		{0, 0, 0, 0, 0, 0, 7, 0, 0, 2, 2, 2, 0, 0, 0, 4, 4, 0, 0, 0, 1}, // col 7-
-		{0, 0, 0, 0, 7, 7, 7, 0, 0, 2, 2, 2, 0, 0, 0, 0, 4, 0, 0, 0, 1}, // col 8-
-		{0, 0, 0, 0, 0, 0, 3, 3, 3, 2, 2, 8, 8, 8, 0, 0, 0, 0, 0, 0, 1}, // col 9-
-		{0, 0, 0, 0, 0, 0, 0, 3, 0, 5, 5, 5, 0, 8, 0, 0, 0, 0, 0, 0, 1}, // col 10-
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}	 // col 11-
-
-	};
 	int score = 0;
 	bool gameOver = false;
-	//? Start the game
+	bool gameStart = false;
+
+board:;
+	int board[12][21] = {
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, // col 0-
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 1-
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 2-
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 3-
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 4-
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 5
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 6
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 7-
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 8-
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 9-
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 10-
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}	 // col 11-
+	};
+	if (gameStart == true)
+	{
+		gameOver = false;
+		goto game;
+	}
+
+	gameStart = startScreen();
+
+	if (gameStart == false)
+		goto end;
+
+game:;
 	cls();
 	game(board, score, gameOver);
+
+	gameStart = endScreen(score);
+	if (gameStart == true)
+		goto board;
+end:;
+	//? Start the game
 }
