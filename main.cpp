@@ -355,7 +355,6 @@ void rowElimination(int board[12][21], int &score, int &fps, int &elimRows, int 
 
 				if (rowState[i + 2] == true)
 				{
-
 					eliminations++;
 					elimRows++;
 					clearRow(board, i + 2);
@@ -364,7 +363,6 @@ void rowElimination(int board[12][21], int &score, int &fps, int &elimRows, int 
 
 					if (rowState[i + 3] == true) // Nested if, with you till end of time <3
 					{
-
 						eliminations++;
 						elimRows++;
 						clearRow(board, i + 3);
@@ -382,7 +380,6 @@ void UserInput(int &key)
 
 	if (_kbhit())
 	{
-
 		switch (_getch())
 		{
 		case 'a':
@@ -746,6 +743,7 @@ void moveBlock(int board[12][21], int direction, block selBlock, int &xOrigin)
 {
 	int buffer[12][21];
 	int temp;
+	int yPos;
 	copyBoard(buffer, board);
 	if (xOrigin > 0 && xOrigin < 12 - selBlock.w)
 	{
@@ -757,6 +755,11 @@ void moveBlock(int board[12][21], int direction, block selBlock, int &xOrigin)
 				{
 					if (buffer[i][j] > 20)
 					{
+
+						if (buffer[i-1][j] > 1 && buffer[i-1][j] < 19)
+						{
+							return;
+						}
 						temp = buffer[i][j];
 						buffer[i][j] = buffer[i - 1][j];
 						buffer[i - 1][j] = temp;
@@ -779,6 +782,10 @@ void moveBlock(int board[12][21], int direction, block selBlock, int &xOrigin)
 				{
 					if (buffer[i][j] > 20)
 					{
+						if (buffer[i+1][j] > 1 && buffer[i+1][j] < 19)
+						{
+							return;
+						}
 						temp = buffer[i + 1][j];
 						buffer[i + 1][j] = buffer[i][j];
 						buffer[i][j] = temp;
@@ -797,7 +804,6 @@ void moveBlock(int board[12][21], int direction, block selBlock, int &xOrigin)
 
 bool startScreen()
 {
-
 	cls();
 	fstream fscore("score.pb", ios::in);
 	char pbChar[12];
@@ -815,15 +821,17 @@ bool startScreen()
 	printf("Presiona \033[5mX\033[0m para salir");
 	setCursor(8, 8);
 	printf("\033[3mMejor puntaje: %i\033[0m", pb);
-
-	sel = _getch();
-
-	if (sel == 13)
-		return true;
-
-	else if (sel == 120 || sel == 88)
+	
+	while (true)
 	{
-		return false;
+		sel = _getch();
+		if (sel == 13)
+			return true;
+
+		else if (sel == 120 || sel == 88)
+		{
+			return false;
+		}
 	}
 }
 
@@ -854,15 +862,16 @@ bool endScreen(int score)
 	printf("REINTENTAR [\033[5;7mENTER\033[0m]");
 	setCursor(9, 16);
 	printf("SALIR [\033[5mX\033[0m]");
-
-	sel = _getch();
-
-	if (sel == 13)
-		return true;
-
-	else if (sel == 120 || sel == 88)
+	while (true)
 	{
-		return false;
+		sel = _getch();
+		if (sel == 13)
+			return true;
+
+		else if (sel == 120 || sel == 88)
+		{
+			return false;
+		}
 	}
 }
 
