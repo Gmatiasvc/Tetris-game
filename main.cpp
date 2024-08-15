@@ -76,7 +76,7 @@ used libs: stdio.h <- printf()
 used in: game() <- draw the current state of the board
 quick info: draws the board matrix
 */
-void drawFrame(int board[12][21], int &elimRows, int &lvl, int &score)
+void drawFrame(int board[12][21], int &elimRows, int &lvl, int &score, int fps)
 {
 	setCursor(0, 0);
 	/*
@@ -174,7 +174,7 @@ void drawFrame(int board[12][21], int &elimRows, int &lvl, int &score)
 	printf("\033[0;37m");
 
 	setCursor(30, 1);
-	printf("Tetris modo facil");
+	printf("Tetris modo facil [FPS: %i]",fps);
 
 	setCursor(30, 3);
 	printf("Puntaje", score);
@@ -875,13 +875,23 @@ bool endScreen(int score)
 	}
 }
 
+void levelCheck(int &lvl, int elimRows, int &fpsBaseline)
+{
+	if (elimRows >= 10*(lvl+1))
+	{
+		lvl++;
+		fpsBaseline += 2;
+	}
+}
+
 /*
 DOC: function game(int matrix board 12x21)
 quick info: executes the game screen
 */
 void game(int board[12][21], int score, bool &gameOver)
 {
-	int fps = 6;
+	int fps = 4;
+	int fpsBaseline = 4;
 	int elimRows = 0;
 	int lvl = 0;
 	int key = -1;
@@ -902,30 +912,34 @@ void game(int board[12][21], int score, bool &gameOver)
 			}
 			else if (key == 1) // left event
 			{
-				key = 0;
+				key = -1;
 				moveBlock(board, 1, selBlock, xOrigin);
 			}
 			else if (key == 2) // right event
 			{
-				key = 0;
+				key = -1;
 				moveBlock(board, 0, selBlock, xOrigin);
 			}
 			else if (key == 0) // down event
 			{
-				fps = 6;
-				key = 0;
+				fps = fpsBaseline*2;
+				key = -1;
 			}
 			else if (key == 4) // up event
 			{
 
-				fps = 2;
-				key = 4;
+				fps = fpsBaseline/2;
+				key = -1;
+			}
+			else if (key == -1)
+			{
+				fps = fpsBaseline;
 			}
 
 			setCursor(0, 0);
 			gravity(board);
 			// moveBlock(board,1,selBlock,xOrigin);
-			drawFrame(board, elimRows, lvl, score);
+			drawFrame(board, elimRows, lvl, score,fps);
 			// printf("  | %i | %i |", key,fps);
 
 			Sleep(int(1000 / fps));
@@ -933,10 +947,11 @@ void game(int board[12][21], int score, bool &gameOver)
 		// drawFrame(board, elimRows, lvl, score);
 
 		rowElimination(board, score, fps, elimRows, lvl);
+		levelCheck(lvl,elimRows,fpsBaseline);
 		while (checkStable(board) != true)
 		{
 			gravity(board);
-			drawFrame(board, elimRows, lvl, score);
+			drawFrame(board, elimRows, lvl, score,fps);
 			Sleep(int(500 / fps));
 		}
 
