@@ -850,7 +850,7 @@ bool endScreen(int score)
 	printf("\033[1mJuego terminado\033[0m");
 	setCursor(5, 4);
 	printf("Puntaje alcanzado: %i", score);
-	setCursor(5, 6);
+	setCursor(6, 6);
 	printf("Mayor puntaje: %i", pb);
 	if (score == pb)
 	{
@@ -888,7 +888,7 @@ void levelCheck(int &lvl, int elimRows, int &fpsBaseline)
 DOC: function game(int matrix board 12x21)
 quick info: executes the game screen
 */
-void game(int board[12][21], int score, bool &gameOver)
+void game(int board[12][21], int &score, bool &gameOver)
 {
 	int fps = 4;
 	int fpsBaseline = 4;
@@ -995,6 +995,7 @@ board:;
 	if (gameStart == true)
 	{
 		gameOver = false;
+		score = 0;
 		goto game;
 	}
 
@@ -1011,5 +1012,4 @@ game:;
 	if (gameStart == true)
 		goto board;
 end:;
-	//? Start the game
 }
