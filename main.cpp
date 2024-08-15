@@ -174,8 +174,8 @@ void drawFrame(int board[12][21], int &elimRows, int &lvl, int &score, int fps)
 	printf("\033[0;37m");
 
 	setCursor(30, 1);
-	printf("Tetris modo facil [FPS: %i]",fps);
-
+	printf("Tetris modo facil");
+	//printf ("[target DPS: %i]",fps);
 	setCursor(30, 3);
 	printf("Puntaje", score);
 	setCursor(30, 4);
@@ -884,6 +884,14 @@ void levelCheck(int &lvl, int elimRows, int &fpsBaseline)
 	}
 }
 
+int waitTime(int fps, clock_t start, clock_t end, int base){
+	clock_t innerStart = clock();
+	double timeSpent = (double)(end - start) / (clock_t)1;
+	clock_t innerEnd = clock();
+	double innterTimeSpent = (double)(innerEnd - innerStart) / (clock_t)1;
+	return int(base / fps)-timeSpent-innterTimeSpent;
+}
+
 /*
 DOC: function game(int matrix board 12x21)
 quick info: executes the game screen
@@ -896,6 +904,11 @@ void game(int board[12][21], int &score, bool &gameOver)
 	int lvl = 0;
 	int key = -1;
 	int xOrigin;
+
+	clock_t start;
+	clock_t end;
+	double sleepTime;
+	
 	block selBlock;
 
 	while (!gameOver)
@@ -903,6 +916,8 @@ void game(int board[12][21], int &score, bool &gameOver)
 		xOrigin = 5;
 		while (checkStable(board) != true)
 		{
+			start = clock();
+
 			UserInput(key);
 
 			if (key == 3) // x key event
@@ -941,8 +956,10 @@ void game(int board[12][21], int &score, bool &gameOver)
 			// moveBlock(board,1,selBlock,xOrigin);
 			drawFrame(board, elimRows, lvl, score,fps);
 			// printf("  | %i | %i |", key,fps);
+			end = clock();
 
-			Sleep(int(1000 / fps));
+			sleepTime = waitTime(fps, start, end, 1000);
+			Sleep(sleepTime);
 		}
 		// drawFrame(board, elimRows, lvl, score);
 
@@ -950,9 +967,12 @@ void game(int board[12][21], int &score, bool &gameOver)
 		levelCheck(lvl,elimRows,fpsBaseline);
 		while (checkStable(board) != true)
 		{
+			start = clock();
 			gravity(board);
 			drawFrame(board, elimRows, lvl, score,fps);
-			Sleep(int(500 / fps));
+			end = clock();
+			sleepTime = waitTime(fps, start, end, 500);
+			Sleep(sleepTime);
 		}
 
 		makeAllPermanent(board);
