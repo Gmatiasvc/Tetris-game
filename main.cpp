@@ -832,6 +832,10 @@ bool startScreen()
 		{
 			return false;
 		}
+		else
+		{
+			printf("\a");
+		}
 	}
 }
 
@@ -871,6 +875,10 @@ bool endScreen(int score)
 		else if (sel == 120 || sel == 88)
 		{
 			return false;
+		}
+		else
+		{
+			printf("\a");
 		}
 	}
 }
