@@ -175,7 +175,7 @@ void drawFrame(int board[12][21], int &elimRows, int &lvl, int &score, int fps)
 
 	setCursor(30, 1);
 	printf("Tetris modo facil");
-	//printf ("[target DPS: %i]",fps);
+	// printf ("[target DPS: %i]",fps);
 	setCursor(30, 3);
 	printf("Puntaje", score);
 	setCursor(30, 4);
@@ -756,7 +756,7 @@ void moveBlock(int board[12][21], int direction, block selBlock, int &xOrigin)
 					if (buffer[i][j] > 20)
 					{
 
-						if (buffer[i-1][j] > 1 && buffer[i-1][j] < 19)
+						if (buffer[i - 1][j] > 1 && buffer[i - 1][j] < 19)
 						{
 							return;
 						}
@@ -782,7 +782,7 @@ void moveBlock(int board[12][21], int direction, block selBlock, int &xOrigin)
 				{
 					if (buffer[i][j] > 20)
 					{
-						if (buffer[i+1][j] > 1 && buffer[i+1][j] < 19)
+						if (buffer[i + 1][j] > 1 && buffer[i + 1][j] < 19)
 						{
 							return;
 						}
@@ -821,7 +821,7 @@ bool startScreen()
 	printf("Presiona \033[5mX\033[0m para salir");
 	setCursor(8, 8);
 	printf("\033[3mMejor puntaje: %i\033[0m", pb);
-	
+
 	while (true)
 	{
 		sel = _getch();
@@ -877,19 +877,20 @@ bool endScreen(int score)
 
 void levelCheck(int &lvl, int elimRows, int &fpsBaseline)
 {
-	if (elimRows >= 10*(lvl+1))
+	if (elimRows >= 10 * (lvl + 1))
 	{
 		lvl++;
 		fpsBaseline += 2;
 	}
 }
 
-int waitTime(int fps, clock_t start, clock_t end, int base){
+int waitTime(int fps, clock_t start, clock_t end, int base)
+{
 	clock_t innerStart = clock();
 	double timeSpent = (double)(end - start) / (clock_t)1;
 	clock_t innerEnd = clock();
 	double innterTimeSpent = (double)(innerEnd - innerStart) / (clock_t)1;
-	return int(base / fps)-timeSpent-innterTimeSpent;
+	return int(base / fps) - timeSpent - innterTimeSpent;
 }
 
 /*
@@ -908,7 +909,7 @@ void game(int board[12][21], int &score, bool &gameOver)
 	clock_t start;
 	clock_t end;
 	double sleepTime;
-	
+
 	block selBlock;
 
 	while (!gameOver)
@@ -937,13 +938,13 @@ void game(int board[12][21], int &score, bool &gameOver)
 			}
 			else if (key == 0) // down event
 			{
-				fps = fpsBaseline*2;
+				fps = fpsBaseline * 2;
 				key = -1;
 			}
 			else if (key == 4) // up event
 			{
 
-				fps = fpsBaseline/2;
+				fps = fpsBaseline / 2;
 				key = -1;
 			}
 			else if (key == -1)
@@ -954,7 +955,7 @@ void game(int board[12][21], int &score, bool &gameOver)
 			setCursor(0, 0);
 			gravity(board);
 			// moveBlock(board,1,selBlock,xOrigin);
-			drawFrame(board, elimRows, lvl, score,fps);
+			drawFrame(board, elimRows, lvl, score, fps);
 			// printf("  | %i | %i |", key,fps);
 			end = clock();
 
@@ -964,12 +965,12 @@ void game(int board[12][21], int &score, bool &gameOver)
 		// drawFrame(board, elimRows, lvl, score);
 
 		rowElimination(board, score, fps, elimRows, lvl);
-		levelCheck(lvl,elimRows,fpsBaseline);
+		levelCheck(lvl, elimRows, fpsBaseline);
 		while (checkStable(board) != true)
 		{
 			start = clock();
 			gravity(board);
-			drawFrame(board, elimRows, lvl, score,fps);
+			drawFrame(board, elimRows, lvl, score, fps);
 			end = clock();
 			sleepTime = waitTime(fps, start, end, 500);
 			Sleep(sleepTime);
