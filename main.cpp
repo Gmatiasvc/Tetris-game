@@ -898,7 +898,13 @@ int waitTime(int fps, clock_t start, clock_t end, int base)
 	double timeSpent = (double)(end - start) / (clock_t)1;
 	clock_t innerEnd = clock();
 	double innterTimeSpent = (double)(innerEnd - innerStart) / (clock_t)1;
-	return int(base / fps) - timeSpent - innterTimeSpent;
+	int finalWaitTime = int(base / fps) - timeSpent - innterTimeSpent;
+	if (finalWaitTime < 1)
+	{
+		finalWaitTime = 1;
+	}
+
+	return finalWaitTime;
 }
 
 /*
