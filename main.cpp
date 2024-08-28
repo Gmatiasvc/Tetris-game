@@ -19,6 +19,10 @@ CREDITOS: ---
 /*
 DOC: class block
 quick info: organizes the current block properties
+
+ES
+DOC: clase block
+info rapida: organiza las propiedades del bloque seleccionado
 */
 class block
 {
@@ -35,6 +39,12 @@ DOC: function cls()
 used libs: windows.h <- system()
 used in: main() <- clears the screen
 quick info: wipes the console output
+
+ES
+DOC: funcion cls()
+libs usadas: windows.h <- system()
+usado en: main() <- limpia la pantalla
+info rapida: limpia todo lo dibujado en la consola
 */
 void cls()
 {
@@ -46,6 +56,11 @@ void cls()
 DOC: function copyMatriz(int matrix a 4x4, int matrix b 4x4)
 used in: spawnBlock() <- sets the selected block shape
 quick info: copies the data from the matrix b into the matrix a
+
+ES
+DOC: funcion copyMatrix(matriz entero a 4x4, matriz entero b 4x4)
+usado en: spawnBlock() <- asigna la forma del bloque seleccionado
+info rapida: copia los datos de la matriz b a la matriz a
 */
 void copyMatrix(int a[4][4], int b[4][4])
 {
@@ -61,8 +76,13 @@ void copyMatrix(int a[4][4], int b[4][4])
 
 /*
 DOC: function copyBoard(int matrix target 12x21, int matrix origin 12x21)
-used in: moveBlock() <- copies the information of the board to a buffer
+used in: moveBlock() <- copies the information of the board to a buffer back and forth
 quick info: copies the data from the origin matrix to the target matrix
+
+ES
+DOC: funcion copyBoard(matriz entero targer 12x21, matriz entero origin 12x21)
+usado en: moveBlock <- copia la informacion de la matriz board a la matriz buffer o viceversa
+info rapida: copia los datos de la matriz origin a la matriz targer
 */
 void copyBoard(int target[12][21], int origin[12][21])
 {
@@ -77,9 +97,14 @@ void copyBoard(int target[12][21], int origin[12][21])
 
 
 /*
-DOC: function setCursor(int x; int y)
-used in: game() <- sets the cursor for next draw
+DOC: function setCursor(int x, int y)
+used in: game(), drawframe(), startScreen(), endScreen() <- sets the cursor for next draw
 quick info: places de cursor in the indicated coordinated
+
+ES
+DOC: funcion setCursor(entero x, entero y)
+usado en: game(), drawframe(), startScreen(), endScreen() <- coloca el cursor en posicion para iniciar el dibujado de pantalla
+info rapida: coloca el cursor en las coordenadas indicadas
 */
 void setCursor(int x, int y)
 {
@@ -97,6 +122,12 @@ DOC: function drawFrame(int matrix board 12x21, int ref elimRows, int ref lvl, i
 used libs: stdio.h <- printf()
 used in: game() <- draw the current state of the board
 quick info: draws the board matrix
+
+ES
+DOC: funcion drawFrame(matriz entero board 12x21, entero referencia elimRows, entero referencia lvl, entero referencia score, entero fps)
+libs usadas: stdio.h <- printf()
+usado en: game() <- dibuja la matriz board
+info rapida: dibuja la matriz board
 */
 void drawFrame(int board[12][21], int &elimRows, int &lvl, int &score, int fps)
 {
@@ -218,7 +249,12 @@ void drawFrame(int board[12][21], int &elimRows, int &lvl, int &score, int fps)
 /*
 DOC: function makeAllPermanent(int matrix board 12x21)
 used in: game() <- makes blocks unmovable
-quick info:reduces the data of a point in the board by 20, only if the point has more than 20 in it's data. This makes the block not to move with moveBlock()
+quick info: reduces the data of a point in the board by 20, only if the point has more than 20 in it's data. This makes the block not to move with moveBlock()
+
+ES
+DOC: funcion makeAllPermanent(matriz entero board 12x21)
+usado en: game <- hace que los bloques no puedan ser movidos por el jugador
+info rapida: reduce el dato de un punto en la matriz board en 20, solo si el punto tiene mas de 20 en su data. Esto hace que el bloque no pueda ser movido con moveBlock()
 */
 void makeAllPermanent(int board[12][21])
 {
@@ -236,9 +272,14 @@ void makeAllPermanent(int board[12][21])
 
 
 /*
-DOC: function gravityTick(int list column |-> ?; int lim)
+DOC: function gravityTick(int list column |-> ?, int lim)
 used in: gravity() <- in the for loops
 quick info: makes entries fall until the limit is reached, int lim delimitates the floor
+
+ES
+DOC: funcion gravityTick(entero lisa column |-> ?, entero lim)
+usado en: gravoty <- dentro de los bucles for
+info rapida: hace que las entradas "caigan" hasta que lim es alcanzado, lim indica donde esta el suelo
 */
 void gravityTick(int list[], int lim)
 {
@@ -257,9 +298,14 @@ void gravityTick(int list[], int lim)
 
 
 /*
-DOC: function checkStable(int matrix board 12x21)
+DOC: function checkStable(int matrix board 12x21) ->> bool
 used in: frame() <- allow next draw
 quick info: checks if the board does not have falling blocks
+
+ES
+DOC: funcion checkStable(matriz entero board 12x21) ->> booleano
+usado en: frame() <- permite el siguiente dibujo de la matriz board
+info rapida: revisa si la matriz board tiene bloques que pueden caer
 */
 bool checkStable(int board[12][21])
 {
@@ -282,6 +328,12 @@ DOC: function gravity(int matrix board 12x21)
 used libs: stdio.h <- printf() as DEBUG
 used in: frame() <- makes the blocks fall
 quick info: makes the blocks fall to the bottom of the stack
+
+ES
+DOC: funcion gravity(matriz entero board 12x21)
+libs usadas: stdio.h <- printf() usado en DEBUG
+usado en: frame() <- hace que los bloques caigan
+info rapida: hace los bloqeus caer todo lo que puedan
 */
 void gravity(int board[12][21])
 {
@@ -307,10 +359,16 @@ void gravity(int board[12][21])
 
 
 /*
-DOC: function rowCheck(int matrix board 12x21; bool list rowState |-> len:24)
+DOC: function rowCheck(int matrix board 12x21, bool list rowState |-> len:24)
 used libs: stdio.h <- printf() as DEBUG
 used in: rowElimination() <- get the number of completed rows
 quick info: fills a list with bools to indicate if a row is full
+
+ES
+DOC: funcion rowCheck(matriz entero board 12x21, booleano lista rowState |-> len:24)
+libs usadas: stdio.h <- printf() usado en DEBUG
+usado en: rowElimination() <- obtiene el numero de filas llenas
+info rapida: llena una lista con boolenaos que indican si una fila esta completa
 */
 void rowCheck(int board[12][21], bool rowState[24])
 {
@@ -343,6 +401,11 @@ void rowCheck(int board[12][21], bool rowState[24])
 DOC: function clearRow(int matrix board 12x21; int pos)
 used in: rowElimination() <- remove the indicated row
 quick info: fills the indicated row with 0
+
+ES
+DOC: funcion clearRow(matriz entero board 12x21; entero pos)
+usado en: rowElimination() <- elimina la fila indicada
+info rapida: llena la fina indicada con 0
 */
 void clearRow(int board[12][21], int pos)
 {
@@ -354,13 +417,22 @@ void clearRow(int board[12][21], int pos)
 
 
 /*
-DOC: function rowElimination(int matrix board 12x21; int ref score; int ref fps; int ref elimRows; int ref lvl)
+DOC: function rowElimination(int matrix board 12x21, int ref score, int ref fps, int ref elimRows, int ref lvl)
 used in game() <- eliminates full rows and assigns the respective points
 quick info: removes rows that are full, with priority of 4 line combos, next 3 line and so on. After that assings the respective score
 ? 1 rows <- 100 pts
 ? 2 rows <- 300 pts
 ? 3 rows <- 500 pts
 ? 4 rows <- 800 pts
+
+ES
+DOC: funcion rowElimination(matriz entero board 12x21, entero referencia score, entero referencia fps, entero referencia elimRows, entero referencia lvl)
+usado en: game() <- elimina las filas llenas y asigna los puntos respectivos
+info rapida: elimina las filas que estan llenas, con prioridad a combos de 4 lines, luego 3 lineas y si sucesivamente. Luego asigna los puntos respectivos
+? 1 fila <- 100 pts
+? 2 fila <- 300 pts
+? 3 fila <- 500 pts
+? 4 fila <- 800 pts
 */
 void rowElimination(int board[12][21], int &score, int &fps, int &elimRows, int &lvl)
 {
@@ -420,6 +492,17 @@ quick info: registers a key press and assings a value to key as corresponds.
 ? d, D <- 2
 ? x, X <- 3
 ? w, W <- 4
+
+ES
+DOC: funcion UserInput(entero referencia key)
+libs usadas: conio.h <- _kbhit() & _getch()
+usado en: game() <- registra una tecla presionada
+info rapida: registra cuando se presiona una tecla y se asigna un valor segun corresponda
+? s, S <- 0
+? a, A <- 1
+? d, D <- 2
+? x, X <- 3
+? w, W <- 4
 */
 void UserInput(int &key)
 {
@@ -458,6 +541,12 @@ DOC: function saveScore(int score)
 used libs: fstream <- class fscore | stdio.h <- printf()
 used in game() <- save the personal best
 quick info: saves the personal best in the file score.pb. if the reached score is greater than the pb, it replaces it, oterwise, skips
+
+ES
+DOC:
+libs usadas:
+usado en:
+info rapida:
 */
 void saveScore(int score)
 {
@@ -480,9 +569,14 @@ void saveScore(int score)
 
 
 /*
-DOC: function spawnBlock(int matrix board 12x21; bool ref gameOver, block ref selBlock)
+DOC: function spawnBlock(int matrix board 12x21, bool ref gameOver, block ref selBlock)
 used in: game() <- spawns a new block or finishes the game
 quick info: selects a random block from the original tetris with a predetermined rotation. Then it spawns it with +20 data in its points, to make it movable. If the block cannot be spawned withouth colliding with other blocks, the function will signal the game over.
+
+ES
+DOC: funcion spawnBlock(matriz entero board 12x21, booleano referencia gameOver, block referencia selBlock)
+usado en: game() <- genera un nuevo bloque o termina el juego
+info rapida: selecciona un bloque aleatorio del tetris original con una rotacion predeterminada. Luego lo genera con +20 en sus puntos, para hacerlo movible con las teclas que el usuario presiona. Si el bloque no puede ser generado sin colisionar con otros, la funcion indica que el juego ha terminado.
 */
 void spawnBlock(int board[12][21], bool &gameOver, block &selBlock)
 {
@@ -797,6 +891,11 @@ void spawnBlock(int board[12][21], bool &gameOver, block &selBlock)
 DOC: function moveBlock(int matrix board 12x21, int direction, block selBlock, int ref xOrigin)
 used in: game() <- processes a moveBlock event
 quick info: moves all the points in the board that are marked as movable. It copies the board to a buffer, then tries to execute the operation, if the operation fails, as in trying to switch with a non 0 point, the buffer will be discarted and not passed as the board thus not drawing it. 
+
+ES
+DOC: funcion moveBlock(matriz entero board 12x21, entero direccion, block selBlock, entero referencia xOrigin)
+usado en: game() <- procesa el evento de movimiento de bloques
+info rapida: mueve todos los puntos en la matriz board que estan marcados como movibles. Copía board a un buffer y luego intenta mover los bloques, si esto falla, en intentnando mover los bloques en un lugar ya ocupado, el buffer se descarta, sino se copia a la matriz.
 */
 void moveBlock(int board[12][21], int direction, block selBlock, int &xOrigin)
 {
@@ -869,6 +968,14 @@ used in: main() <- shows an start screen and signals the start or end of the gam
 quick info: shows a start screen. Shows the title, options and current high score
 ? x, X <- exit
 ? [enter] <- start
+
+ES
+DOC: funcion startScreen() ->> bool
+libs usadas: fstream <- type fstream ; conio.h <- _getch()
+usado en: main() <- muestra una pantalla de entrada y señala si el juego inicia o termina
+info rapida: muestra una pantalla de entrada, muestra el titulo, opciones y mayor puntaje
+? x, X <- salir
+? [enter] <- entrar
 */
 bool startScreen()
 {
@@ -915,6 +1022,15 @@ used in: main() <- shows a game over screen and signals the restart or exit of t
 quick info: shows a game over screen. Shows achieved score, options and if there is a new personal best
 ? x, X <- exit
 ? [enter] <- restart
+
+ES
+DOC: funcion endScreen() ->> bool
+libs usadas: fstream <- type fstream ; conio.h <- _getch()
+usado en: main() <- muestra una pantalla de juego terminado y señala si el juego se reinicia o sale
+info rapida: muestra una pantalla de juego terminado, muestra el puntaje alcanzado, opciones y si se ha alcanzado un nuevo mayor puntaje
+? x, X <- salir
+? [enter] <- reiniciar
+
 */
 bool endScreen(int score)
 {
@@ -962,9 +1078,14 @@ bool endScreen(int score)
 
 
 /*
-DOC: function levelCheck(int ref lvl; int elimRows; int ref fpsBaseline)
+DOC: function levelCheck(int ref lvl, int elimRows, int ref fpsBaseline)
 used in: game() <- checks the current level and scales difficulty
 quick info: updates the level by +1 when 10 rows are cleared, also speeds the game by +2 fps
+
+ES
+DOC: funcion levelCheck(entero referencia lvl, entero elimRows, entero referencia fpsBaseline)
+usado en: game() <- revisa el nivel actual y escala la dificultad
+info rapida: actualiza el nivel +1 cuando 10 filas han sido eliminadas, tambien hace que el juego se acelece con +2 fps
 */
 void levelCheck(int &lvl, int elimRows, int &fpsBaseline)
 {
@@ -981,6 +1102,12 @@ DOC: function waitTime(int fps, clock_t start, clock_t end, int base)
 used libs: time.h <- type clocl_t
 used in: game() <- gets the time to wait
 quick info: calculates the time left to complete the fps cycle, keeping the waiting period between presses constant
+
+ES
+DOC: funcion waitTime(entero fps, clock_t start, clock_t end, entero base)
+libs usadas: time.h <- type clocl_t
+usado en: game() <- calcula el tiempo que tiene que esperar el programa
+info rapida: clacula el tiempo restante para completar el ciclo de fps, manteniendo un tiempo de espera constante entre actualizaciones
 */
 int waitTime(int fps, clock_t start, clock_t end, int base)
 {
@@ -1001,6 +1128,10 @@ int waitTime(int fps, clock_t start, clock_t end, int base)
 /*
 DOC: function game(int matrix board 12x21, int ref score, int ref gameOver)
 quick info: executes the game screen
+
+ES
+DOC: funcion game(matriz entero board 12x21, entero referencia score, entero referencia gameOver)
+info rapida: ejecuta la pantalla del juego
 */
 void game(int board[12][21], int &score, bool &gameOver)
 {
@@ -1090,8 +1221,12 @@ void game(int board[12][21], int &score, bool &gameOver)
 
 
 /*
-DOC: function main
+DOC: function main()
 quick info: this is the main function, self explanatory
+
+ES
+DOC: funcion main()
+info rapida: esta es la funcin main, se explica solo
 */
 int main()
 {
