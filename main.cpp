@@ -22,6 +22,7 @@ public:
 	int color;
 };
 
+
 /*
 DOC: function cls()
 used libs: windows.h <- system()
@@ -33,6 +34,12 @@ void cls()
 	system("cls");
 }
 
+
+/*
+DOC: function copyMatriz(int matrix a 4x4, int matrix b 4x4)
+used in: spawnBlock() <- sets the selected block shape
+quick info: copies the data from the matrix b into the matrix a
+*/
 void copyMatrix(int a[4][4], int b[4][4])
 {
 	for (int i = 0; i < 4; i++)
@@ -44,6 +51,12 @@ void copyMatrix(int a[4][4], int b[4][4])
 	}
 }
 
+
+/*
+DOC: function copyBoard(int matrix target 12x21, int matrix origin 12x21)
+used in: moveBlock() <- copies the information of the board to a buffer
+quick info: copies the data from the origin matrix to the target matrix
+*/
 void copyBoard(int target[12][21], int origin[12][21])
 {
 	for (int i = 0; i < 12; i++)
@@ -54,6 +67,7 @@ void copyBoard(int target[12][21], int origin[12][21])
 		}
 	}
 }
+
 
 /*
 DOC: function setCursor(int x; int y)
@@ -70,8 +84,9 @@ void setCursor(int x, int y)
 	SetConsoleCursorPosition(hcon, dwPos);
 }
 
+
 /*
-DOC: function drawFrame(int matrix board 12x21)
+DOC: function drawFrame(int matrix board 12x21, int ref elimRows, int ref lvl, int ref score, int fps)
 used libs: stdio.h <- printf()
 used in: game() <- draw the current state of the board
 quick info: draws the board matrix
@@ -192,6 +207,12 @@ void drawFrame(int board[12][21], int &elimRows, int &lvl, int &score, int fps)
 	printf("%i", lvl);
 }
 
+
+/*
+DOC: function makeAllPermanent(int matrix board 12x21)
+used in: game() <- makes blocks unmovable
+quick info:reduces the data of a point in the board by 20, only if the point has more than 20 in it's data. This makes the block not to move with moveBlock()
+*/
 void makeAllPermanent(int board[12][21])
 {
 	for (int i = 0; i < 12; i++)
@@ -206,8 +227,9 @@ void makeAllPermanent(int board[12][21])
 	}
 }
 
+
 /*
-DOC: function gravityTick(int column |-> ?; int lim)
+DOC: function gravityTick(int list column |-> ?; int lim)
 used in: gravity() <- in the for loops
 quick info: makes entries fall until the limit is reached, int lim delimitates the floor
 */
@@ -225,6 +247,7 @@ void gravityTick(int list[], int lim)
 		}
 	}
 }
+
 
 /*
 DOC: function checkStable(int matrix board 12x21)
@@ -245,6 +268,7 @@ bool checkStable(int board[12][21])
 	}
 	return true;
 }
+
 
 /*
 DOC: function gravity(int matrix board 12x21)
@@ -274,8 +298,9 @@ void gravity(int board[12][21])
 	}
 }
 
+
 /*
-DOC: function rowCheck(int matrix board 12x21; bool list rowState |-> len:20)
+DOC: function rowCheck(int matrix board 12x21; bool list rowState |-> len:24)
 used libs: stdio.h <- printf() as DEBUG
 used in: rowElimination() <- get the number of completed rows
 quick info: fills a list with bools to indicate if a row is full
@@ -306,6 +331,7 @@ void rowCheck(int board[12][21], bool rowState[24])
 	}
 }
 
+
 /*
 DOC: function clearRow(int matrix board 12x21; int pos)
 used in: rowElimination() <- remove the indicated row
@@ -319,8 +345,9 @@ void clearRow(int board[12][21], int pos)
 	}
 }
 
+
 /*
-DOC: function rowElimination(int matrix board 12x21; ref >-> int score)
+DOC: function rowElimination(int matrix board 12x21; int ref score; int ref fps; int ref elimRows; int ref lvl)
 used in game() <- eliminates full rows and assigns the respective points
 quick info: removes rows that are full, with priority of 4 line combos, next 3 line and so on. After that assings the respective score
 ? 1 rows <- 100 pts
@@ -375,6 +402,18 @@ void rowElimination(int board[12][21], int &score, int &fps, int &elimRows, int 
 	}
 }
 
+
+/*
+DOC: function UserInput(int ref key)
+used libs: conio.h <- _kbhit() & _getch()
+used in: game() <- registers a key press
+quick info: registers a key press and assings a value to key as corresponds.
+? s, S <- 0
+? a, A <- 1
+? d, D <- 2
+? x, X <- 3
+? w, W <- 4
+*/
 void UserInput(int &key)
 {
 
@@ -406,6 +445,7 @@ void UserInput(int &key)
 	}
 }
 
+
 /*
 DOC: function saveScore(int score)
 used libs: fstream <- class fscore | stdio.h <- printf()
@@ -431,6 +471,12 @@ void saveScore(int score)
 	}
 }
 
+
+/*
+DOC: function spawnBlock(int matrix board 12x21; bool ref gameOver, block ref selBlock)
+used in: game() <- spawns a new block or finishes the game
+quick info: selects a random block from the original tetris with a predetermined rotation. Then it spawns it with +20 data in its points, to make it movable. If the block cannot be spawned withouth colliding with other blocks, the function will signal the game over.
+*/
 void spawnBlock(int board[12][21], bool &gameOver, block &selBlock)
 {
 
@@ -739,6 +785,12 @@ void spawnBlock(int board[12][21], bool &gameOver, block &selBlock)
 	}
 }
 
+
+/*
+DOC: function moveBlock(int matrix board 12x21, int direction, block selBlock, int ref xOrigin)
+used in: game() <- processes a moveBlock event
+quick info: moves all the points in the board that are marked as movable. It copies the board to a buffer, then tries to execute the operation, if the operation fails, as in trying to switch with a non 0 point, the buffer will be discarted and not passed as the board thus not drawing it. 
+*/
 void moveBlock(int board[12][21], int direction, block selBlock, int &xOrigin)
 {
 	int buffer[12][21];
@@ -802,6 +854,15 @@ void moveBlock(int board[12][21], int direction, block selBlock, int &xOrigin)
 	}
 }
 
+
+/*
+DOC: function startScreen() ->> bool
+used libs: fstream <- type fstream ; conio.h <- _getch()
+used in: main() <- shows an start screen and signals the start or end of the game
+quick info: shows a start screen. Shows the title, options and current high score
+? x, X <- exit
+? [enter] <- start
+*/
 bool startScreen()
 {
 	cls();
@@ -839,6 +900,15 @@ bool startScreen()
 	}
 }
 
+
+/*
+DOC: function endScreen() ->> bool
+used libs: fstream <- type fstream ; conio.h <- _getch()
+used in: main() <- shows a game over screen and signals the restart or exit of the game
+quick info: shows a game over screen. Shows achieved score, options and if there is a new personal best
+? x, X <- exit
+? [enter] <- restart
+*/
 bool endScreen(int score)
 {
 	cls();
@@ -883,6 +953,12 @@ bool endScreen(int score)
 	}
 }
 
+
+/*
+DOC: function levelCheck(int ref lvl; int elimRows; int ref fpsBaseline)
+used in: game() <- checks the current level and scales difficulty
+quick info: updates the level by +1 when 10 rows are cleared, also speeds the game by +2 fps
+*/
 void levelCheck(int &lvl, int elimRows, int &fpsBaseline)
 {
 	if (elimRows >= 10 * (lvl + 1))
@@ -892,6 +968,13 @@ void levelCheck(int &lvl, int elimRows, int &fpsBaseline)
 	}
 }
 
+
+/*
+DOC: function waitTime(int fps, clock_t start, clock_t end, int base)
+used libs: time.h <- type clocl_t
+used in: game() <- gets the time to wait
+quick info: calculates the time left to complete the fps cycle, keeping the waiting period between presses constant
+*/
 int waitTime(int fps, clock_t start, clock_t end, int base)
 {
 	clock_t innerStart = clock();
@@ -907,8 +990,9 @@ int waitTime(int fps, clock_t start, clock_t end, int base)
 	return finalWaitTime;
 }
 
+
 /*
-DOC: function game(int matrix board 12x21)
+DOC: function game(int matrix board 12x21, int ref score, int ref gameOver)
 quick info: executes the game screen
 */
 void game(int board[12][21], int &score, bool &gameOver)
@@ -997,22 +1081,25 @@ void game(int board[12][21], int &score, bool &gameOver)
 	saveScore(score);
 }
 
+
 /*
 DOC: function main
 quick info: this is the main function, self explanatory
 */
 int main()
 {
+	//defined int score; defined bool gameOver flag; defined bool gameStart flag 
+	int score = 0;
+	bool gameOver = false;
+	bool gameStart = false;
+
+// defined point board
+board:;
 	/*
 	DOC: private int board:
 	quick info: this is the matrix where the game status will be saved
 	defined matrix board; size: 12x21; type: int
 	*/
-	int score = 0;
-	bool gameOver = false;
-	bool gameStart = false;
-
-board:;
 	int board[12][21] = {
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, // col 0-
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // col 1-
@@ -1031,20 +1118,23 @@ board:;
 	{
 		gameOver = false;
 		score = 0;
-		goto game;
+		goto game; //? goes to point: game
 	}
 
 	gameStart = startScreen();
 
 	if (gameStart == false)
-		goto end;
+		goto end; //? goes to point: end
 
+//defined point game
 game:;
 	cls();
 	game(board, score, gameOver);
 
 	gameStart = endScreen(score);
 	if (gameStart == true)
-		goto board;
+		goto board; //? goes to point: board
+
+//defined point end
 end:;
 }

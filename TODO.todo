@@ -5,16 +5,16 @@ Juego:
 x Implementar música
 + Implementar eliminacion de lineas
 + Generar nuevos tetrónimos
-    - Escribir documentacion @low
+    + Escribir documentacion @low
 + Leer teclas presionadas 
-    - Escribir documentacion @low
+    + Escribir documentacion @low
 + Sistema de guardado de mejor puntaje
-    - Escribir documentacion @low
+    + Escribir documentacion @low
 + Crear niveles
-    - Escribir documentacion @low
+    + Escribir documentacion @low
 + Contar filas eliminadas
 + implementar fps  
-    - Escribir documentacion @low
+    + Escribir documentacion @low
 
 Fisicas:
 
@@ -27,9 +27,9 @@ Consola:
 
 + Crear sistema de renderizado
 + Mostrar nivel
-    - Escribir documentacion @low
+    + Escribir documentacion @low
 + Mostrar filas eliminadas
-    - Escribir documentacion @low
+    + Escribir documentacion @low
 + Mostrar puntaje
 
 Graficos:
